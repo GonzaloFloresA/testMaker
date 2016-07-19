@@ -1,0 +1,11 @@
+To: Julio Alberto <jultum88@gmail.com>
+Subject: Probando el email desde testmaker
+Message-ID: <8ec4343c2f0a6280a919eb4793d6549b@localhost>
+Date: Tue, 28 Jun 2016 03:25:14 +0000
+From: stormsoft2015# <stormsoft2015@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<h1>Bienvenido a testmaker!!</h1>
+
