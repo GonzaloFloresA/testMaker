@@ -120,6 +120,10 @@
                       <a href="{{url('admin/course/eliminate/'.$course->id)}}" class="btn btn-default btn-delete bg-red" data-toggle="tooltip" title="Eliminar" >
 												<i class="fa fa-trash" aria-hidden="true"></i>
 											</a>
+					
+					  <a href="{{url('admin/course/show/'.$course->id)}}" class="btn btn-default btn-delete bg-green" data-toggle="tooltip" title="Ver Detalles" >
+												<span class="glyphicon glyphicon-eye-open"></span>
+											</a>
                     </td>
                   </tr>
                 @endforeach

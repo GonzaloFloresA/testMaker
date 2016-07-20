@@ -3,6 +3,11 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection as Collection;
 
+/**
+THIS IS THE TEACHER CLASS
+
+*/
+
 class Teacher extends Model {
 
 	//

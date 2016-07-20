@@ -139,7 +139,9 @@
                     {{$group->course->name}}
                   </td>
                   <td>
-                    {{$group->nro}}
+                    <a href="{{url('admin/group/show/'.$group->id)}}" class="btn btn-default btn-delete bg-red"  data-toggle="tooltip" title="Ver Grupo">
+                          {{$group->nro}}
+                        </a>
                   </td>
                   <td>
                     {{$group->teacher->user->name}}

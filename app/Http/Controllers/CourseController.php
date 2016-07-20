@@ -13,6 +13,7 @@ use Redirect;
 use Validator;
 use Excel;
 use Config;
+use DB;
 
 // use Illuminate\Support\Facades\Request;
 class CourseController extends Controller {
@@ -80,7 +81,19 @@ class CourseController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$course = Course::find($id);
+		$careers = Career::all();
+		$groups2 = DB::table('groups')->where('course_id', $id)->get();
+
+		$groups = DB::table('groups')
+            ->join('teachers', 'teachers.id', '=', 'groups.teacher_id')
+            ->join('users', 'users.id', '=', 'teachers.user_id')
+            ->join('courses', 'courses.id', '=', 'groups.course_id')
+            ->select('groups.id','groups.nro','groups.year','groups.semester', 'courses.name as courseName','users.name as teacherName')
+            ->where('groups.course_id', $id)
+            ->get();
+
+		return view("courses.courseView", compact('course','groups','careers'));
 	}
 
 	/**

@@ -51,6 +51,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('course/edit/{id}','CourseController@update');
 	Route::get('course/eliminate/{id}','CourseController@eliminate');
 	Route::post('course/delete/{id}','CourseController@destroy');
+	Route::get('course/show/{id}','CourseController@show');
 
 	Route::get('user','UserController@index');
 	Route::get('user/activeUser/{id}','UserController@activate');
@@ -73,6 +74,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('group/create', 'GroupController@create');
 	Route::post('group/savexcel', 'GroupController@saveModel');
 	Route::post('group/asign', 'GroupController@asign');
+	Route::get('group/show/{id}', 'GroupController@show');
 
 
 	Route::get('student','StudentController@index');
