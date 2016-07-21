@@ -92,10 +92,14 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 
 		Route::get('/', 'WelcomeController@index');
 		Route::get('/{id}/course', 'TeacherController@mycourses');
-		Route::get('{teacher}/course/{course}','TeacherController@groups');
-	// Route::get('/', 'WelcomeController@index');
+		Route::get('/{teacher}/course/{course}','TeacherController@groups');
+		Route::get('/group/{id}/questions', 'TeacherController@myquestions');
 
-	// Route::get('/create', 'TeacherController@create');
+		Route::get('/question/store','QuestionController@store');
+		Route::get('/question/show/{id}','QuestionController@show');
+		Route::get('/question/edit/{id}','QuestionController@edit');
+		Route::post('/question/edit/{id}','QuestionController@update');
+		Route::get('/question/delete/{id}','QuestionController@destroy');
 });
 
 // rutas permitidas para el usuario tipo estudiante (student)
