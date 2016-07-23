@@ -8,6 +8,8 @@ use Illuminate\Support\Collection as Collection;
 use App\Teacher;
 use App\Course;
 use App\Group;
+use App\Question;
+use App\Exam;
 use Hash;
 use Session;
 use Redirect;
@@ -259,11 +261,28 @@ class TeacherController extends Controller {
 	}
 
 	public function groups($teacher, $course){
-		return view('common.working');
+		$id = Teacher::where('user_id','=',$teacher)->first()->id;
+		$name_course = Course::where('id','=',$course)->first()->name;
+		$groups = Group::where('teacher_id','=',$id)->where('course_id','=',intval($course))->get();
+		// dd($groups);
+		return view('groups.details',compact('groups','name_course'));
 	}
 
 	public function mystudents($id){
 
+	}
+
+	public function myquestions($id){
+
+		$questions = Question::where('group_id','=',intval($id))->orderBy('id','desc')->get();
+		// dd($questions);
+		return view('questions.list',compact('questions','id'));
+	}
+
+	public function myexams($group){
+		$exams = Exam::where('group_id','=',$group)->get();
+
+		return view('exams.list',compact('group','exams'));
 	}
 
 }

@@ -114,12 +114,16 @@
 											{{$course->career->name}}
 										</td>
                     <td class="text-center">
+                      <a href="{{url('admin/course/show/'.$course->id)}}" class="btn btn-default btn-delete bg-orange" data-toggle="tooltip" title="Ver Detalles" >
+							<span class="glyphicon glyphicon-eye-open"></span>
+						</a>
                       <a href="{{url('admin/course/edit/'.$course->id)}}" class="btn btn-default btn-edit bg-green" data-toggle="tooltip" title="Editar">
 												<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 											</a>
                       <a href="{{url('admin/course/eliminate/'.$course->id)}}" class="btn btn-default btn-delete bg-red" data-toggle="tooltip" title="Eliminar" >
 												<i class="fa fa-trash" aria-hidden="true"></i>
 											</a>
+						
                     </td>
                   </tr>
                 @endforeach

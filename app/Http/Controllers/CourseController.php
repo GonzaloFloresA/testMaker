@@ -13,7 +13,7 @@ use Redirect;
 use Validator;
 use Excel;
 use Config;
-
+use DB;
 // use Illuminate\Support\Facades\Request;
 class CourseController extends Controller {
 

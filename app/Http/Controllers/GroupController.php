@@ -234,7 +234,17 @@ class GroupController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$group = $id;
+
+		$users = DB::table('group_student')
+            
+            ->join('students', 'students.id', '=', 'group_student.student_id')
+            ->join('users', 'users.id', '=', 'students.user_id')
+            ->select('group_student.anio','group_student.semester','users.id','users.name','users.email','users.active', 'users.type','users.user_img')
+            ->where('group_student.group_id',$id)
+            ->get();
+
+		return view("groups.groupView", compact('users','group'));
 	}
 
 	/**

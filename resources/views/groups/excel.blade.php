@@ -27,8 +27,6 @@
         							<div class="title">Asignar Docente Grupo</div>
         								<input type="file" id="file-up" name="file-up" class="excel" title="Choose a file to upload">
     									</div>
-    									<!-- <span class="upload-path"></span> -->
-    								<!-- <input class="btn" type="file" id="photo" name="photo"  value="Enviar"> -->
     							</div>
     						</div>
     							<div class="form-group">
@@ -41,7 +39,7 @@
     					</form>
             </div>
 
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
               <h1 class='text-center'><i class="fa fa-chain fa-4x" aria-hidden="true"></i></h1>
               <form  class="form-horizontal" enctype="multipart/form-data" action="{{ url('admin/group/asign') }}" method="post">
     						<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -51,8 +49,7 @@
         							<div class="title" >Asignar Estudiante Grupo</div>
         								<input type="file" id="file-up" name="file-up" class="excel" title="Choose a file to upload">
     									</div>
-    									<!-- <span class="upload-path"></span> -->
-    								<!-- <input class="btn" type="file" id="photo" name="photo"  value="Enviar"> -->
+    									
     							</div>
     						</div>
     							<div class="form-group">
@@ -63,7 +60,7 @@
     								</div>
     							</div>
     					</form>
-            </div>
+            </div> -->
 					</div>
 
 				</div>
