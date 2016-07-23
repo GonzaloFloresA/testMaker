@@ -9,6 +9,7 @@ use App\Teacher;
 use App\Course;
 use App\Group;
 use App\Question;
+use App\Exam;
 use Hash;
 use Session;
 use Redirect;
@@ -276,6 +277,12 @@ class TeacherController extends Controller {
 		$questions = Question::where('group_id','=',intval($id))->orderBy('id','desc')->get();
 		// dd($questions);
 		return view('questions.list',compact('questions','id'));
+	}
+
+	public function myexams($group){
+		$exams = Exam::where('group_id','=',$group)->get();
+
+		return view('exams.list',compact('group','exams'));
 	}
 
 }

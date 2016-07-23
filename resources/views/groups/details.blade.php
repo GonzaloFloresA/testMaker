@@ -26,9 +26,9 @@
 											{{ $group->nro }}
 										</td>
 										<td class="text-center">
-											<a href="{{ url('teacher/group/'.$group->id.'/students') }}" class="btn btn-default btn-delete bg-blue" data-toggle="tooltip" title="Lista de Estudiantes">
+											<!-- <a href="{{ url('teacher/group/'.$group->id.'/students') }}" class="btn btn-default btn-delete bg-blue" data-toggle="tooltip" title="Lista de Estudiantes">
 												<i class="fa fa-users" aria-hidden="true" ></i>
-											</a>
+											</a> -->
 
 											<a href="{{ url('teacher/group/'.$group->id.'/questions') }}" class="btn btn-default btn-delete bg-lime" data-toggle="tooltip" title="Preguntas de la Materia">
 												<i class="fa fa-question" aria-hidden="true"></i>

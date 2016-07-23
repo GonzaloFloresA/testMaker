@@ -29,6 +29,14 @@
     <script src="{{URL::asset('js/wow.min.js')}}"></script>
     <script src="{{URL::asset('js/custom-scripts.js')}}"></script>
     <script src="{{URL::asset('js/photo.js')}}"></script>
+    <script src="{{URL::asset('js/clockpicker.js')}}"></script>
     <!-- <script src="{{URL::asset('contact/jqBootstrapValidation.js')}}"></script> -->
     <!-- <script src="{{URL::asset('contact/contact_me.js')}}"></script> -->
     <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript">
+        $('.clockpicker').clockpicker({
+            placement:'top',
+            align:'left',
+            autoclose:'true'
+        });
+    </script>

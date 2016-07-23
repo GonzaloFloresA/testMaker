@@ -6,7 +6,8 @@
   <link href="{{URL::asset('css/prettyPhoto.css')}}" rel="stylesheet">
   <link href="{{URL::asset('css/styles.css')}}" rel="stylesheet">
   <link href="{{URL::asset('css/photo.css')}}" rel="stylesheet">
-  <link href="{{URL::asset('https://s3-us-west-2.amazonaws.com/colors-css/2.2.0/colors.min.css')}}" rel="stylesheet">
+  <link href="{{URL::asset('css/colors.css')}}" rel="stylesheet">
+  <link href="{{URL::asset('css/clockpicker.css')}}" rel="stylesheet">
   <!--link href="{{URL::asset('css/form-elements.css')}}" rel="stylesheet">
   <link href="{{URL::asset('css/style-login.css')}}" rel="stylesheet"-->
   <!--[if lt IE 9]>

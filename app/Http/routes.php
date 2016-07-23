@@ -51,6 +51,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('course/edit/{id}','CourseController@update');
 	Route::get('course/eliminate/{id}','CourseController@eliminate');
 	Route::post('course/delete/{id}','CourseController@destroy');
+	Route::get('course/show/{id}','CourseController@show');
 
 	Route::get('user','UserController@index');
 	Route::get('user/activeUser/{id}','UserController@activate');
@@ -73,6 +74,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('group/create', 'GroupController@create');
 	Route::post('group/savexcel', 'GroupController@saveModel');
 	Route::post('group/asign', 'GroupController@asign');
+	Route::get('group/show/{id}', 'GroupController@show');
 
 
 	Route::get('student','StudentController@index');
@@ -94,12 +96,20 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 		Route::get('/{id}/course', 'TeacherController@mycourses');
 		Route::get('/{teacher}/course/{course}','TeacherController@groups');
 		Route::get('/group/{id}/questions', 'TeacherController@myquestions');
+		Route::get('group/{group}/exams','TeacherController@myexams');
 
-		Route::get('/question/store','QuestionController@store');
-		Route::get('/question/show/{id}','QuestionController@show');
-		Route::get('/question/edit/{id}','QuestionController@edit');
-		Route::post('/question/edit/{id}','QuestionController@update');
-		Route::get('/question/delete/{id}','QuestionController@destroy');
+		Route::get('group/{group}/exam/create','ExamController@create');
+		Route::post('group/{group}/exam/create','ExamController@store');
+		Route::get('group/{group}/exam/edit/{id}','ExamController@edit');
+		Route::post('group/{group}/exam/edit/{id}','ExamController@update');
+		Route::get('group/{group}/exam/delete/{id}','ExamController@destroy');
+
+		Route::get('question/store','QuestionController@store');
+		Route::get('question/show/{id}','QuestionController@show');
+		Route::get('question/edit/{id}','QuestionController@edit');
+		Route::post('question/edit/{id}','QuestionController@update');
+		Route::get('question/delete/{id}','QuestionController@destroy');
+
 });
 
 // rutas permitidas para el usuario tipo estudiante (student)

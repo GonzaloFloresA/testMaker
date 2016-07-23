@@ -60,7 +60,12 @@
 												{{ $question->title }}
 											</td>
 											<td class="text-center">
-												{{ $question->types }}
+												@if($question->types == 'develop')
+													Desarrollo
+												@else
+													Op. Multiple
+												@endif
+												
 											</td>
 											<td class="text-center">
 												<a href="{{ url('teacher/question/show/'.$question->id) }}" class="btn btn-default btn-delete bg-orange" data-toggle="tooltip" title="Ver Pregunta">

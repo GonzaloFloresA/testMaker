@@ -56,7 +56,13 @@ class QuestionController extends Controller {
 	 			// dd($question);
 	 			break;
 	 		case 'develop':
-	 			dd("desarrollo");
+	 			$question = new Question;
+	 			$question->title = "Default Title";
+	 			$question->types = 'develop';
+	 			$question->description = "";
+	 			$question->group_id = intval($request->get('group'));
+	 			$question->save();
+
 	 			break;
 	 		
 	 	}
@@ -72,8 +78,12 @@ class QuestionController extends Controller {
 	public function show($id)
 	{
 		$question = Question::find($id);
-		// dd($question);
-		return view('questions.show', compact('question'));
+		if($question->types == 'develop'){
+			return view('questions.showDevelop', compact('question'));
+		}else{
+			return view('questions.show', compact('question'));
+		}
+		
 	}
 
 	/**
@@ -87,9 +97,9 @@ class QuestionController extends Controller {
 		// dd("aqui se editan las preguntas ".$id);
 		$question = Question::find($id);
 		if($question->types == 'develop'){
-			// llenar codigo
+			return view("questions.develop",compact('question'));
 		}else{
-			return view('questions.edit',compact('question'));
+			return view('questions.multiple',compact('question'));
 		}
 	}
 
@@ -103,7 +113,20 @@ class QuestionController extends Controller {
 	{
 		$question = Question::find($id);
 		if($question->types == 'develop'){
-			// llenar codigo
+
+			$rules = array(
+			'title' => 'required|string',
+			'description' => 'string',
+			);
+			$this->validate($request, $rules);
+
+			Session::flash('flash_message',"Los datos se han actualizado correctamente");
+			$question->title = $request['title'];
+			$question->description = $request['description'];
+			$question->save();
+
+			return Redirect::back();
+
 		}else{
 			$rules = array(
 			'title' => 'required|string',
@@ -152,13 +175,19 @@ class QuestionController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$question = Question::find($id);
-		foreach ($question->multipleQuestion->options as $option) {
-			$option->delete();
-		}
-		$question->multipleQuestion->delete();
 
-		$question->delete();
+		$question = Question::find($id);
+
+		if($question->types == 'develop'){
+			$question->delete();
+		}else{
+			foreach ($question->multipleQuestion->options as $option) {
+				$option->delete();
+			}
+			$question->multipleQuestion->delete();
+			$question->delete();
+		}
+		
 
 		return Redirect::back();
 	}
