@@ -10,3 +10,15 @@
     </ul>
   </div>
 @endif
+
+@if(Session::has('errorSintaxis'))
+<div class="alert alert-danger bg-red white">
+    <button type="button" class="close white" data-dismiss="alert"><i class="fa fa-times" aria-hidden="true"></i>
+</button>
+    <strong>Ups!</strong> {{ Session::get('errorSintaxis') }}<br><br>
+    <ul>
+    	<!-- <li></li> -->
+    </ul>
+  </div>
+      
+@endif

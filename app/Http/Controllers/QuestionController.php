@@ -53,7 +53,7 @@ class QuestionController extends Controller {
 	 			$multiple->question_id = $question->id;
 	 			$multiple->save();
 
-	 			// dd($question);
+	 			// dd($question);up
 	 			break;
 	 		case 'develop':
 	 			$question = new Question;
@@ -64,7 +64,17 @@ class QuestionController extends Controller {
 	 			$question->save();
 
 	 			break;
-	 		
+	 		case 'complemento':
+	 			//dd('entra a complemento');
+	 			$question = new Question;
+	 			$question->title = "Default Title";
+	 			$question->types = 'complemento';
+	 			$question->description = "";
+	 			$question->group_id = intval($request->get('group'));
+	 			$question->save();
+
+	 			break;
+
 	 	}
 	 	return Redirect::back();
 	}
@@ -80,10 +90,21 @@ class QuestionController extends Controller {
 		$question = Question::find($id);
 		if($question->types == 'develop'){
 			return view('questions.showDevelop', compact('question'));
-		}else{
+		}
+		if($question->types == 'multiple'){
 			return view('questions.show', compact('question'));
 		}
-		
+		if($question->types == 'complemento'){
+			$listaComplementos = $this->multiexplode(array("(x)","(/x)"), $question->description);
+			return view('questions.showComplemento', compact('question','listaComplementos'));
+		}
+	}
+
+	public function multiexplode ($delimiters,$string) {
+    
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
 	}
 
 	/**
@@ -96,10 +117,17 @@ class QuestionController extends Controller {
 	{
 		// dd("aqui se editan las preguntas ".$id);
 		$question = Question::find($id);
+		//$group_id = $question->group_id;
 		if($question->types == 'develop'){
 			return view("questions.develop",compact('question'));
-		}else{
+		}
+		if($question->types == 'multiple'){
 			return view('questions.multiple',compact('question'));
+		}
+		if($question->types == 'complemento'){
+			return view('questions.complemento',compact('question'));	
+		}else{
+			return view('/');
 		}
 	}
 
@@ -127,7 +155,8 @@ class QuestionController extends Controller {
 
 			return Redirect::back();
 
-		}else{
+		}
+		if($question->types == 'multiple'){
 			$rules = array(
 			'title' => 'required|string',
 			'description' => 'string',
@@ -163,8 +192,37 @@ class QuestionController extends Controller {
 		$question->save();
 
 		return Redirect::back();
+		} //fin if multiple
+
+		if($question->types == 'complemento'){
+			$rules = array(
+			'title' => 'required|string',
+			'description' => 'string',
+			);
+			$this->validate($request, $rules);
+
+			if (strpos($request['description'], '(x)') === false && strpos($request['description'], '(/x)') === false) {
+				//dd('entra <!DOCTYPE html>');
+				//-----Session::flash('alert-class', 'No se ha encontrado las etiquetas <x> y </x>, favor utilizar ese formato'); 
+    			//return Redirect::back()->with('error', 'No se ha encontrado las etiquetas <x> y </x>, favor utilizar ese formato');
+
+    			return Redirect::back()->with('errorSintaxis', 'No se ha encontrado las etiquetas (x) y (/x), favor utilizar ese formato');
+			}
+
+			$open = substr_count($request['description'], '(x)');
+			$close = substr_count($request['description'], '(/x)');
+			
+    		if($open != $close)
+    			return Redirect::back()->with('errorSintaxis', 'Hay etiquetas (x) y (/x) no estan emparejadas correctamente.');
+
+			Session::flash('flash_message',"Los datos se han actualizado correctamente");
+			$question->title = $request['title'];
+			$question->description = $request['description'];
+			$question->save();
+
+			return Redirect::back();
 		}
-		
+		return Redirect::to('/');
 	}
 
 	/**
@@ -180,11 +238,15 @@ class QuestionController extends Controller {
 
 		if($question->types == 'develop'){
 			$question->delete();
-		}else{
+		}
+		if($question->types == 'multiple'){
 			foreach ($question->multipleQuestion->options as $option) {
 				$option->delete();
 			}
 			$question->multipleQuestion->delete();
+			$question->delete();
+		}
+		if($question->types == 'complemento'){
 			$question->delete();
 		}
 		

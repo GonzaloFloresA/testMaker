@@ -21,8 +21,9 @@
 
 									<div class="form-group">
 									<select class="form-control" name="type">
-										<option value="multiple">Op. Multiple</option>
+										<option value="multiple">Opcion Multiple</option>
 										<option value="develop">Desarrollo</option>
+										<option value="complemento">Complemento</option>
 									</select>
 									</div>
   									
@@ -62,8 +63,10 @@
 											<td class="text-center">
 												@if($question->types == 'develop')
 													Desarrollo
-												@else
+												@elseif($question->types == 'multiple')
 													Op. Multiple
+												@elseif($question->types == 'complemento')
+													Complemento
 												@endif
 												
 											</td>
