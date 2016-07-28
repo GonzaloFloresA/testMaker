@@ -3,6 +3,10 @@
     <li class="scroll"><a href="{{url('/')}}">
       <i class="fa fa-home" aria-hidden="true"></i> Inicio </a>
     </li>
+    <li class="scroll"><a href="{{url('student/'.Auth::user()->id.'/coursesList')}}">
+      <i class="glyphicon-class" aria-hidden="true"></i><span class="glyphicon glyphicon-modal-window" aria-hidden="true"></span> Explorar Materias</a>
+      
+    </li>
     <li class="scroll">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
         <i class="fa fa-book" aria-hidden="true"></i> Mis Materias

@@ -8,46 +8,54 @@
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-heading" >Materias Impartidas</div>
-				<div class="panel-body" id="pricing">
-          <div class="container col-md-12">
-          <div class="row">
+<div class="panel-body">
 
-            @foreach($courses as $course)
-            <div class="col-sm-6 col-md-3">
-              <div class="wow zoomIn" data-wow-duration="400ms" data-wow-delay="0ms">
-                <ul class="pricing">
-                  <li class="plan-header">
-                    <div class="price-duration">
-                      <span class="price">
-                        <img src="{{URL::asset('images/book.jpg')}}" alt="" width="100px" />
-                      </span>
-                      <span class="duration">
-                        Materia
-                      </span>
-                    </div>
-                    <div class="plan-name">
-                      <p>
-                        {{ $course->cod_sis }}
-                      </p>
-                      {{ $course->name }}
-                    </div>
-                  </li>
-                  <!-- <li>
-                    <p>Nique porriqua tquises dolorem desumquia doloresamet consectet adipisci.
-							         Masagni dolores eoquie voluptate sequi saliquam quaerat voluptate.
-                    </p>
-                  </li> -->
-                  <li class="plan-purchase">
-                <a class="btn btn-primary" href="{{url('teacher/'.Auth::user()->id.'/course/'.$course->id)}}">Ver Contenido</a>
-                  </li>
-                </ul>
-              </div>
+            <table class="table table-bordered black">
+              <thead>
+                <th class="col-sm-1">Nro Grupo</th>
+                <th >Materia</th>
+                <th>Usuario</th>
+                
+                <th class="col-sm-1">Semestre</th>
+                
+                <th>Acciones</th>
+              </thead>
+              <tbody>
+
+               
+                
+                @foreach($courses as $course)
+                  <tr>
+                    <td>
+                      {{$course->nro}}
+                    </td>
+                    <td>
+                    <a href="{{url('student/'.$course->groupStudentId.'/status')}}" class="btn btn-default btn-delete bg-blue" data-toggle="Entrar al grupo" title="Entrar al Curso" >
+                      {{$course->courseName}}  
+                      </a>
+                      
+                    </td> 
+                    <td>
+                      {{$course->userName}}
+                    </td>
+                    
+                    <td>
+                      {{$course->semester}}
+                    </td>
+                    
+                    <td class="text-center">
+                      
+          
+            <a href="{{url('student/'.$course->groupStudentId.'/leaveGroupConfirm')}}" class="btn btn-default btn-delete bg-red" data-toggle="tooltip" title="Abandonar Grupo" >
+                        <span class="glyphicon glyphicon-log-out"></span>
+                      </a>
+                    </td>
+                  </tr>
+                @endforeach
+                
+              </tbody>
+            </table>
             </div>
-            @endforeach
-          </div>
-
-          </div>
-				</div>
 			</div>
 		</div>
 	</div>

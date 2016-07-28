@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection as Collection;
 use App\Student;
 use App\Course;
+use App\Career;
+use App\Group;
+use App\GroupStudent;
 use Hash;
 use Session;
 use Redirect;
 use Validator;
 use Excel;
 use Config;
+use DB;
+
 class StudentController extends Controller {
 
 	/**
@@ -209,6 +214,7 @@ class StudentController extends Controller {
 
 
 	public function mycourses($id){
+		/*
 		$student = Student::where('user_id','=',$id)->first();
 		$courses= new Collection;
 		foreach ($student->groups as $group) {
@@ -216,10 +222,145 @@ class StudentController extends Controller {
 		}
 		$courses = $courses->unique();
 		// dd($courses);
-
+		
 		return view('courses.coursedesc', compact('courses'));
+*/
+
+
+		$courses = DB::table('groups')
+            ->join('group_student', 'group_student.group_id', '=', 'groups.id')
+            ->join('courses', 'courses.id', '=', 'groups.course_id')
+            ->join('teachers','teachers.id','=','groups.teacher_id')
+            ->join('users', 'users.id', '=', 'teachers.user_id')
+            ->select('group_student.id as groupStudentId','groups.id','courses.name as courseName','users.name as userName','groups.nro','groups.semester')
+            ->where('group_student.student_id', $id)
+            ->get();
+
+		return view("courses.coursedesc", compact('courses'));
 	}
 
+	public function registerToCourseList(Request $request,$id){
 
+		//dd('explore	');
+		$user_id = $id;
+		$mycourses = DB::table('groups')
+            		->join('group_student', 'group_student.group_id', '=', 'groups.id')
+            		->join('courses', 'courses.id', '=', 'groups.course_id')
+            		->join('teachers','teachers.id','=','groups.teacher_id')
+            		->join('users', 'users.id', '=', 'teachers.user_id')
+            		->select('groups.id')
+            		->where('group_student.student_id', $user_id)
+            		->get();
+        $mycoursesArray = array();
+        //$tam = sizeof($mycourses);
+            		//dd($mycourses);	
+        foreach ($mycourses as $mc) {
+			array_push($mycoursesArray,$mc->id);
+		}
+       // dd($mycoursesArray);
+		$find = $request->get('field');
 
+		switch ($request->get('attribute')) {
+			case 'anio':
+				//$groups = Group::anio($request->get('field'))->orderBy('id', 'ASC')->paginate(10);
+				$groups = DB::table('groups')
+            		->join('courses', 'courses.id', '=', 'groups.course_id')
+            		->join('careers','careers.id','=','courses.career_id')
+            		->join('teachers','teachers.id','=','groups.teacher_id')
+            		->join('users', 'users.id', '=', 'teachers.user_id')
+            		->select('groups.id','groups.year','groups.nro','courses.level','users.name as teacherName','courses.name as courseName','careers.name as careerName');
+
+            		if(trim($find) != "")
+            		$groups = $groups->whereNotIn('groups.id', $mycoursesArray)->where('groups.year', "LIKE", "%$find%")->orderBy('groups.year', 'DESC')->paginate(10);
+            		else
+            		$groups = $groups->whereNotIn('groups.id', $mycoursesArray)->orderBy('groups.year', 'DESC')->paginate(10);
+
+				break;
+			case 'docente':
+				//dd('orden docente');
+				//$groups = Group::whereNotIn('id', $mycoursesArray)->orderBy('', 'ASC')->paginate(10);
+				$groups = DB::table('groups')
+            		->join('courses', 'courses.id', '=', 'groups.course_id')
+            		->join('careers','careers.id','=','courses.career_id')
+            		->join('teachers','teachers.id','=','groups.teacher_id')
+            		->join('users', 'users.id', '=', 'teachers.user_id')
+            		->select('groups.id','groups.year','groups.nro','courses.level','users.name as teacherName','courses.name as courseName','careers.name as careerName');
+
+            		if(trim($find) != "")
+            		$groups = $groups->whereNotIn('groups.id', $mycoursesArray)->where('users.name', "LIKE", "%$find%")->orderBy('users.name', 'DESC')->paginate(10);
+            		else
+            		$groups = $groups->whereNotIn('groups.id', $mycoursesArray)->orderBy('users.name', 'ASC')->paginate(10);
+            		
+				break;
+			case 'materia':
+				$groups = DB::table('groups')
+            		->join('courses', 'courses.id', '=', 'groups.course_id')
+            		->join('careers','careers.id','=','courses.career_id')
+            		->join('teachers','teachers.id','=','groups.teacher_id')
+            		->join('users', 'users.id', '=', 'teachers.user_id')
+            		->select('groups.id','groups.year','groups.nro','courses.level','users.name as teacherName','courses.name as courseName','careers.name as careerName');
+
+            		if(trim($find) != "")
+            		$groups = $groups->whereNotIn('groups.id', $mycoursesArray)->where('courses.name', "LIKE", "%$find%")->orderBy('courses.name', 'DESC')->paginate(10);
+            		else
+            		$groups = $groups->whereNotIn('groups.id', $mycoursesArray)->orderBy('courses.name', 'ASC')->paginate(10);
+            		
+				break;
+			default:
+				//$groups = Course::name($request->get('field'))->orderBy('id', 'ASC')->paginate(10);
+				//$groups = Group::paginate(10);
+				
+				$groups = DB::table('groups')
+            		->join('courses', 'courses.id', '=', 'groups.course_id')
+            		->join('careers','careers.id','=','courses.career_id')
+            		->join('teachers','teachers.id','=','groups.teacher_id')
+            		->join('users', 'users.id', '=', 'teachers.user_id')
+            		->select('groups.id','groups.year','groups.nro','courses.level','users.name as teacherName','courses.name as courseName','careers.name as careerName')
+            		->whereNotIn('groups.id', $mycoursesArray)->orderBy('id', 'ASC')->paginate(10);
+            		
+				break;
+				//perform - $groups = Group::whereNotIn('id', $mycoursesArray)->orderBy('id', 'ASC')->paginate(10);
+				break;
+		}
+		$careers = Career::all();
+
+		return view('courses.registerToCourseList', compact('courses','careers','groups'));
+
+	}
+
+	public function confirmCourse($id)
+	{
+		$group = Group::find($id);
+		return view("courses.registerConfirmCourse", compact('group'));
+	}
+
+	public function registerToCourse($id,Request $request)
+	{
+		$student = $request->get('student_id');
+
+  		$groupStudent = new GroupStudent;
+		$groupStudent->group_id = $id;
+		$groupStudent->student_id = $student;
+		$groupStudent->anio = 2016;
+		$groupStudent->semester = 1;
+		$groupStudent->save();
+
+		Session::flash('flash_message',"Se ha inscrito correctamente!");
+		return redirect('student/'.$student.'/course');
+	}
+
+	public function getOutConfirmGroup($id){
+		$groupStudent = GroupStudent::find($id);
+		return view("courses.getOutConfirmGroup", compact('groupStudent'));
+	}
+
+	public function getOutGroup($id,Request $request){
+		$student = $request->get('student_id');
+
+		$studentGroup = GroupStudent::find($id);
+		$studentGroup->delete();
+		Session::flash('flash_message', "Usted ha abandonado correctamente el grupo.");
+
+		return redirect('student/'.$student.'/course');
+	}
 }

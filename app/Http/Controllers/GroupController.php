@@ -8,12 +8,13 @@ use App\User;
 use App\Teacher;
 use App\Course;
 use App\Group;
+use App\GroupStudent;
 use Session;
 use Hash;
 use Redirect;
 use Validator;
 use Excel;
-use Config;
+use Config;	
 
 class GroupController extends Controller {
 
@@ -294,6 +295,11 @@ class GroupController extends Controller {
 
 	public function excel(){
 		return view('groups.excel');
+	}
+
+	public function statusGroup($id){
+		$groupStudent = GroupStudent::find($id);
+		return view("groups.statusGroup", compact('groupStudent'));
 	}
 
 }

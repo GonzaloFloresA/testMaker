@@ -53,6 +53,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('course/delete/{id}','CourseController@destroy');
 	Route::get('course/show/{id}','CourseController@show');
 
+
 	Route::get('user','UserController@index');
 	Route::get('user/activeUser/{id}','UserController@activate');
 	Route::post('user/create/email', 'UserController@createEmail');
@@ -84,6 +85,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('student/excel', 'StudentController@previs');
 	Route::post('student/savexcel', 'StudentController@saveModel');
 
+
 	Route::get('career/{id}/delete','CareerController@delete');
 	Route::resource('career','CareerController');
 
@@ -105,4 +107,11 @@ Route::group(['middleware'=>['auth','student'], 'prefix' => 'student'], function
 	// Route::get('/', 'WelcomeController@index');
 		Route::get('/', 'WelcomeController@index');
 		Route::get('/{id}/course', 'StudentController@mycourses');
+		Route::get('/{id}/coursesList', 'StudentController@registerToCourseList');
+		Route::get('/{id}/confirmCourse', 'StudentController@confirmCourse');
+		Route::post('/{id}/register', 'StudentController@registerToCourse');
+		Route::get('/{id}/leaveGroupConfirm', 'StudentController@getOutConfirmGroup');
+		Route::post('/{id}/leaveGroup', 'StudentController@getOutGroup');
+
+		Route::get('/{id}/status', 'GroupController@statusGroup');
 });

@@ -24,4 +24,27 @@ class Group extends Model {
 		return $this->hasMany('App\Exam');
 	}
 
+	public function scopeAnio($query, $year){
+		if(trim($year) != ""){
+			$query->where('year', "LIKE", "%$year%");
+
+		}
+	}
+
+	public function scopeDocente($query, $docente){
+		if(trim($docente) != ""){
+			$query->where('year', "LIKE", "%$year%");
+
+		}
+	}
+
+	public function scopeMateria($query, $materia){
+		if(trim($docente) != ""){
+			
+			$query->where('year', "LIKE", "%$year%");
+
+		}
+	}
+
+
 }
