@@ -39,14 +39,14 @@
     					</form>
             </div>
 
-						<!-- <div class="col-md-4">
+						<div class="col-md-4">
               <h1 class='text-center'><i class="fa fa-chain fa-4x" aria-hidden="true"></i></h1>
               <form  class="form-horizontal" enctype="multipart/form-data" action="{{ url('admin/group/asign') }}" method="post">
     						<input type="hidden" name="_token" value="{{ csrf_token() }}">
     						<div class="form-group">
     							<div class="col-md-12">
     								<div class="browse-wrap">
-        							<div class="title" >Asignar Estudiante Grupo</div>
+        							<div class="title" >Inscribir Estudiante</div>
         								<input type="file" id="file-up" name="file-up" class="excel" title="Choose a file to upload">
     									</div>
     									
@@ -60,7 +60,7 @@
     								</div>
     							</div>
     					</form>
-            </div> -->
+            </div>
 					</div>
 
 				</div>

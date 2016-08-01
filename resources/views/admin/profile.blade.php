@@ -89,34 +89,36 @@
 				</div>
 			</div>
 
-			<!--div class="panel panel-default shadow-panel">
+			<div class="panel panel-default shadow-panel">
 				<div class="panel-heading" > Cambiar Contrasena </div>
 				<div class="panel-body">
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('admin/user/resetpass/'.$user->id) }}">
+					<form class="form-horizontal" role="form" method="POST" action="{{ url('user/resetpass/'.$user->id) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-            <div class="form-group">
-							<label class="col-md-4 control-label">Contrasena Anterior</label>
-							<div class="col-md-8">
-								<input type="password" class="form-control" name="old_pass" value="" disabled="true">
-							</div>
-						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Contrasena Nueva</label>
 							<div class="col-md-8">
-								<input type="password" class="form-control" name="new_pass" value="" disabled="true">
+								<input type="password" class="form-control" name="password" value="">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Confirmar Contrasena</label>
+							<div class="col-md-8">
+								<input type="password" class="form-control" name="password_confirmation" value="">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-2 col-md-offset-4">
-								<button type="submit" class="btn btn-primary" disabled="true">Guardar</button>
+								<button type="submit" class="btn btn-primary">Guardar</button>
 							</div>
 						</div>
 					</form>
 				</div>
-			</div-->
+			</div
+		
 		</div>
 
 </div>

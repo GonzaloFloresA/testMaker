@@ -11,5 +11,10 @@ class Question extends Model {
 		return $this->hasOne('App\MultipleQuestion');
 	}
 
+	public function exams()
+	{
+		return $this->belongsToMany('App\Exam');
+	}
+
 
 }

@@ -20,14 +20,42 @@ class UserController extends Controller {
 	 */
 	public function index(Request $request)
 	{
-
+		// dd($request->get('field'));
 		switch ($request->get('attribute')) {
 			case 'email':
+
 				$users = User::email($request->get('field'))->orderBy('id', 'ASC')->paginate(10);
 				break;
 			case 'type':
-				$users = User::type($request->get('field'))->orderBy('id', 'ASC')->paginate(10);
+
+				$userType = $this->getUserType( $request->get('field') );
+
+				if($userType == -1){
+					$users = User::name( "" )->orderBy('id', 'ASC')->paginate(10);	
+				}else{
+					$users = User::type( $userType )->orderBy('id', 'ASC')->paginate(10);
+					
+				}				
 				break;
+
+			case 'state':
+				// dd("verificando el estado");
+				$state = $request->get('field');
+				$stateUser = -1;
+				if($state == 'activo'){
+					$stateUser = 1;
+				}else if($state == 'inactivo'){
+					$stateUser = 0;
+				}
+				
+				if($stateUser == -1){
+					$users = User::name( "" )->orderBy('id', 'ASC')->paginate(10);	
+				}else{
+					$users = User::state( $stateUser )->orderBy('id', 'ASC')->paginate(10);
+					
+				}				
+				break;
+
 			case 'name':
 			default:
 				$users = User::name($request->get('field'))->orderBy('id', 'ASC')->paginate(10);
@@ -109,39 +137,39 @@ class UserController extends Controller {
 		return Redirect::back();
 	}
 
-	public function resetPassword($id,Request $request){
-		$user = User::find($id);
-		// $pass = $user->password;
+	// public function resetPassword($id,Request $request){
+	// 	$user = User::find($id);
+	// 	// $pass = $user->password;
 
-		$rules = array(
-			'old_pass' => 'required',
-			'new_pass' => 'required|min:5'
-		);
+	// 	$rules = array(
+	// 		'old_pass' => 'required',
+	// 		'new_pass' => 'required|min:5'
+	// 	);
 
-		// $this->validate($request, $rules);
-		if($this->validate($request, $rules)){
-			if (Hash::check($request['old_pass'], $user->password)) {
-				$user->password = Hash::make($request['new_pass']);
-				$user->save();
-				Session::flash('flash_message',"Tu password se ha cambiado!!! ");
+	// 	// $this->validate($request, $rules);
+	// 	if($this->validate($request, $rules)){
+	// 		if (Hash::check($request['old_pass'], $user->password)) {
+	// 			$user->password = Hash::make($request['new_pass']);
+	// 			$user->save();
+	// 			Session::flash('flash_message',"Tu password se ha cambiado!!! ");
 
-			}
-		}
+	// 		}
+	// 	}
 
-		return Redirect::back();
-
-
+	// 	return Redirect::back();
 
 
-		// if (Hash::check($request['old_pass'], $pass)) {
-	 // 		$user->password = Hash::make($request['new_pass']);
 
-    // 	return 'es el pass';
-		// }else{
-		// 	return 'no es el pass';
-		// }
 
-	}
+	// 	// if (Hash::check($request['old_pass'], $pass)) {
+	//  // 		$user->password = Hash::make($request['new_pass']);
+
+ //    // 	return 'es el pass';
+	// 	// }else{
+	// 	// 	return 'no es el pass';
+	// 	// }
+
+	// }
 
 
 	public function storage($id,Request $request){
@@ -227,6 +255,34 @@ class UserController extends Controller {
 	public function deleteGroup(Request $request){
 		dd($request['id']);
 	}
+
+	 public function resetPassword(Request $request)
+    {   
+    	// dd('verificando reset del password'.$request->get('password'));
+            $this->validate($request, [
+                    'password' => 'required|confirmed',
+            ]);
+            $credentials = $request->only(
+                    'email', 'password', 'password_confirmation'
+            );
+            $user = \Auth::user();
+            $user->password = bcrypt($credentials['password']);
+            $user->save();
+            Session::flash('flash_message',"La contrasena ha sido cambiada");
+            return Redirect::back();
+    }
+
+    public function getUserType($field){
+    	if($field == 'administrador'){
+    		return 0;
+    	}else if($field == 'docente'){
+    		return 1;
+    	}else if($field == 'estudiante'){
+    		return 2;
+    	}else{
+    		return -1;
+    	}
+    }
 
 
 

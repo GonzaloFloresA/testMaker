@@ -24,3 +24,23 @@
 	</div>
 </div>
 @endsection
+
+@section('ajax')
+
+			<div class="panel panel-default">
+				<div class="panel-heading" >{{ $question->title }}</div>
+				<div class="panel-body">
+				
+
+					<div class="row bg-silver" >
+						<div class="col-md-10 col-md-offset-1">
+							<p style="text-align:justify;"> <strong> Pregunta: </strong>
+								{{ $question->description }}	
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+@endsection

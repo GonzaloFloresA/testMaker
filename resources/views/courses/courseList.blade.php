@@ -18,9 +18,9 @@
 								<i class="fa fa-table" aria-hidden="true"></i>
 							</a>
 
-							<button  class="btn btn-success" formaction="{{ url('admin/course/deletegroup') }}" form="check-selection" data-toggle="tooltip" title="Eliminar Seleccionados">
+							<!-- <button  class="btn btn-success" formaction="{{ url('admin/course/deletegroup') }}" form="check-selection" data-toggle="tooltip" title="Eliminar Seleccionados">
 								<i class="fa fa-trash-o" aria-hidden="true"></i>
-							</button>
+							</button> -->
 							</div>
 						</div>
 						<div class="col-md-6" >

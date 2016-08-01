@@ -272,11 +272,11 @@ class TeacherController extends Controller {
 
 	}
 
-	public function myquestions($id){
+	public function myquestions($group){
 
-		$questions = Question::where('group_id','=',intval($id))->orderBy('id','desc')->get();
+		$questions = Question::where('group_id','=',intval($group))->orderBy('id','desc')->get();
 		// dd($questions);
-		return view('questions.list',compact('questions','id'));
+		return view('questions.list',compact('questions','group'));
 	}
 
 	public function myexams($group){

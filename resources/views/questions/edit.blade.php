@@ -11,7 +11,7 @@
 					@include('common.error')
 		<div class="container-fluid">
 			<div class="row">
-				<form  class="form-horizontal" action="{{ url('teacher/question/edit/'.$question->id)}}" method ="POST">
+				<form  class="form-horizontal" action="{{ url('teacher/group/'.$group.'/question/edit/'.$question->id)}}" method ="POST">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div class="form-group">
 						<label for="title" class="col-sm-2">Titulo</label>		
@@ -84,3 +84,4 @@
 	</div>
 
 @endsection
+

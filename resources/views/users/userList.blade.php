@@ -16,21 +16,24 @@
 							<button class="btn btn-success" formaction="{{ url('admin/user/create/email') }}" form="form-email" data-toggle="tooltip" title="Enviar Correo.">
 								<i class="fa fa-envelope-o" aria-hidden="true"></i>
 							</button>
-							<button  class="btn btn-success" formaction="{{ url('admin/user/deletegroup') }}" form="form-email"  data-toggle="tooltip" title="Eliminar Usuarios">
-								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							<button class="btn btn-success" data-toggle="tooltip" title="Seleccionar Todo" id="select-all">
+								<i class="fa fa-globe" aria-hidden="true"></i>
 							</button>
+							<!-- <button  class="btn btn-success" formaction="{{ url('admin/user/deletegroup') }}" form="form-email"  data-toggle="tooltip" title="Eliminar Usuarios">
+								<i class="fa fa-trash-o" aria-hidden="true"></i>
+							</button> -->
 							</div>
 						</div>
 						<div class="col-md-6" >
 							<div class="row">
-              <form class="form-inline col-md-offset-4" action="{{url('admin/user')}}" method="get">
+              <form class="form-inline col-md-offset-4" action="{{url('admin/user')}}" method="get" id="form-users">
 
 									<div class="form-group">
 									<select class="form-control" name="attribute">
 										<option value="name">Nombre</option>
 										<option value="email">Email</option>
 										<option value="type">Tipo</option>
-										<option value="active">Estado</option>
+										<option value="state">Estado</option>
 									</select>
 									</div>
   								<div class="form-group">
@@ -137,4 +140,17 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('scripts')
+	<script>
+		$('#select-all').click(function(){
+			$users = $("input[type='checkbox']");
+			$users.each(function($index,element){
+				$(this).prop('checked',true);
+			});
+			// console.log($users);
+			// alert($users.length);
+		});
+	</script>
 @endsection

@@ -133,6 +133,7 @@ jQuery(function($) {
         });
 
         $portfolio_selectors.on('click', function() {
+            // console.log("gargola de mi tia");
             $portfolio_selectors.removeClass('active');
             $(this).addClass('active');
             var selector = $(this).attr('data-filter');
@@ -215,6 +216,6 @@ jQuery(function($) {
             map: map
         });
     }
-    google.maps.event.addDomListener(window, 'load', initialize_map);
+    // google.maps.event.addDomListener(window, 'load', initialize_map);
 
 });
