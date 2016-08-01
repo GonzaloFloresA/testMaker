@@ -45,6 +45,10 @@
 												<i class="fa fa-pencil" aria-hidden="true"></i>
 											</a>
 
+											<a href="{{ url('teacher/group/'.$group.'/exam/edit/'.$exam->id.'/asign') }}" class="btn btn-default btn-delete bg-blue" data-toggle="tooltip" title="Asignar Preguntas">
+												<i class="fa fa-tasks" aria-hidden="true"></i>
+											</a>
+
 											<a href="{{ url('teacher/group/'.$group.'/exam/delete/'.$exam->id) }}" class="btn btn-default btn-delete bg-red" data-toggle="tooltip" title="Eliminar Examen">
 												<i class="fa fa-close" aria-hidden="true"></i>
 											</a>

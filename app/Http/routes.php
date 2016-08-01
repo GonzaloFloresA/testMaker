@@ -74,7 +74,9 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::post('group/create', 'GroupController@create');
 	Route::post('group/savexcel', 'GroupController@saveModel');
 	Route::post('group/asign', 'GroupController@asign');
+	Route::post('group/inscription', 'GroupController@inscription');
 	Route::get('group/show/{id}', 'GroupController@show');
+	Route::post('group/{group}/registerstudent', 'GroupController@registerstudent');
 
 
 	Route::get('student','StudentController@index');
@@ -95,7 +97,7 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 		Route::get('/', 'WelcomeController@index');
 		Route::get('/{id}/course', 'TeacherController@mycourses');
 		Route::get('/{teacher}/course/{course}','TeacherController@groups');
-		Route::get('/group/{id}/questions', 'TeacherController@myquestions');
+		Route::get('/group/{group}/questions', 'TeacherController@myquestions');
 		Route::get('group/{group}/exams','TeacherController@myexams');
 
 		Route::get('group/{group}/exam/create','ExamController@create');
@@ -104,11 +106,14 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 		Route::post('group/{group}/exam/edit/{id}','ExamController@update');
 		Route::get('group/{group}/exam/delete/{id}','ExamController@destroy');
 
-		Route::get('question/store','QuestionController@store');
-		Route::get('question/show/{id}','QuestionController@show');
-		Route::get('question/edit/{id}','QuestionController@edit');
-		Route::post('question/edit/{id}','QuestionController@update');
-		Route::get('question/delete/{id}','QuestionController@destroy');
+		Route::get('group/{group}/exam/edit/{id}/asign','ExamController@asign');
+		Route::post('group/{group}/exam/edit/{id}/asign','ExamController@populate');
+
+		Route::get('group/{group}/question/store','QuestionController@store');
+		Route::get('group/{group}/question/show/{id}','QuestionController@show');
+		Route::get('group/{group}/question/edit/{id}','QuestionController@edit');
+		Route::post('group/{group}/question/edit/{id}','QuestionController@update');
+		Route::get('group/{group}/question/delete/{id}','QuestionController@destroy');
 
 });
 

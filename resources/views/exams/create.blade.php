@@ -37,16 +37,11 @@
 								<label class="col-md-2 control-label">Duracion</label>
 								<div class="col-md-9">
 									<select class="form-control" name="duration" id="duration">
-										<option value="00:30:00">30 min</option>
-										<option value="01:00:00">1 hr </option>
-										<option value="01:30:00">1 hr 30 min</option>
-										<option value="02:00:00">2 hr </option>
-										<option value="02:30:00">2 hr 30 min</option>
-										<option value="03:00:00">3 hr </option>
-										<option value="03:30:00">3 hr 30 min</option>
-										<option value="04:00:00">4 hr </option>
-										<option value="04:30:00">4 hr 30 min</option>
-										<option value="05:00:00">5 hr </option>
+									@foreach($range as $duration)
+										<option value="{{ $duration['time'] }}">
+											{{ $duration['time'] }}
+										</option>
+									@endforeach
 									</select>
 									
 									<!-- <span class="input-group-addon">
@@ -71,8 +66,9 @@
 							</div>
 
 							<div class="form-group">
-								<div class="col-md-6 col-md-offset-2">
+								<div class="col-md-6 col-md-offset-2 text-center">
 									<button type="submit" class="btn btn-primary">Guardar</button>
+									<a href="{{	URL:: previous() }}" class="btn btn-primary">Cancelar</a>
 								</div>
 							</div>
 					</form>

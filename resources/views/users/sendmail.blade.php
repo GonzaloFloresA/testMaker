@@ -13,7 +13,7 @@
             <form class="" action="{{url('admin/user/send/email')}}" method="post">
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="col-md-4 ">
-              <ul class="list-group pre-scrollable">
+              <ul class="list-group scroll-personal" id="list-email">
                   @foreach($users as $user)
                   <li class="list-group-item">
                     <img src="{{URL::asset($user->userPhoto())}}" alt="" class="img-circle" width="30px" height="30px"/> {{$user->email}}

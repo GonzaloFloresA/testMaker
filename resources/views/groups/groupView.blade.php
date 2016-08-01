@@ -4,6 +4,59 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
+			@include('common.messages')
+			@include('common.error')
+			<div class="panel panel-default">
+
+				<div class="panel-heading" >
+					<div class="row">
+						<div class="col-md-2">
+							Inscribir Alumno
+						</div>
+						<div class="col-md-4">
+							<div class="row">
+							<a href="{{ url('admin/group/excel') }}" class="btn btn-success" data-toggle="tooltip" title="Crear a partir de excel">
+								<i class="fa fa-table" aria-hidden="true"></i>
+							</a>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="panel-body">
+					
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+              <form class="" action="{{url('admin/group/'.$group.'/registerstudent')}}" method="post">
+								<input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="row">
+                <div class="col-md-12">
+                <div class="form-group">
+					<label for="teacher">Cod Sis Estudiante</label>
+                  	<select multiple class="form-control" name="student">
+                    	@foreach($students as $student)
+                      		<option value="{{$student->id}}">{{$student->cod_sis}}</option>
+                    	@endforeach
+                  	</select>
+                </div>
+                </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2 col-md-offset-5">
+                  <div class="form-group">
+                    <button class="btn btn-primary" type="submit" name="button">Inscribir</button>
+                  </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+				</div>
+			</div>
+
 			<div class="panel panel-default">
 				<div class="panel-heading" >
 					<div class="row">
@@ -47,8 +100,7 @@
 
 				</div>
 				<div class="panel-body">
-          @include('common.messages')
-          @include('common.error')
+       
           <table class="table table-bordered">
             <thead >
 							<th class="text-center col-md-1">Select</th>

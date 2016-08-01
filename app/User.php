@@ -86,4 +86,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	}
 
+	public function scopeState($query, $state){
+		if(trim($state) != ""){
+
+					$query->where('active', "LIKE", "%$state%");
+		}
+
+	}
+
 }

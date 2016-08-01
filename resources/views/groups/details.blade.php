@@ -11,8 +11,35 @@
 				<div class="panel-body">
 					@include('common.messages')
 					@include('common.error')
-				
 					<div class="row">
+                	@foreach($groups as $group)
+
+                 <div class="col-md-3 col-sm-6 ">
+                    <div class="team-member wow fadeInUp animated group" data-wow-duration="400ms" data-wow-delay="300ms" style="visibility: visible; animation-duration: 400ms; animation-delay: 300ms; animation-name: fadeInUp;">
+                        <div class="team-img">
+                            <img class="img-responsive" src="{{ URL::asset('images/libro-icono.png')}}" alt="" width="150px"> 
+                        </div>
+                        <div class="team-info">
+                            <p></p>
+                            <p>  <span><strong>Grupo {{ $group->nro }} </strong></span>
+                            	<span class="pull-right">
+                            	<a class="btn btn-default btn-delete bg-olive" href="{{ url('teacher/group/'.$group->id.'/questions') }}" data-toggle="tooltip" title="Preguntas de la Materia">
+                            		<i class="fa fa-question" aria-hidden="true"></i>
+                            	</a>
+                            	<a class="btn btn-default btn-delete bg-olive" href="{{ url('teacher/group/'.$group->id.'/exams') }}" data-toggle="tooltip" title="Lista de Examenes">
+                            		<i class="fa fa-list " aria-hidden="true"></i>
+                            	</a>
+                            	</span>
+                            </p>
+                           
+                        </div>  
+                    </div>
+                </div>
+                	@endforeach
+            </div>
+
+					
+					<!-- <div class="row">
 						<div class="col-md-8 col-md-offset-2">
 							<table class="table table-bordered">
 								<thead>
@@ -26,10 +53,6 @@
 											{{ $group->nro }}
 										</td>
 										<td class="text-center">
-											<!-- <a href="{{ url('teacher/group/'.$group->id.'/students') }}" class="btn btn-default btn-delete bg-blue" data-toggle="tooltip" title="Lista de Estudiantes">
-												<i class="fa fa-users" aria-hidden="true" ></i>
-											</a> -->
-
 											<a href="{{ url('teacher/group/'.$group->id.'/questions') }}" class="btn btn-default btn-delete bg-lime" data-toggle="tooltip" title="Preguntas de la Materia">
 												<i class="fa fa-question" aria-hidden="true"></i>
 											</a>
@@ -45,7 +68,7 @@
 							</table>
 						</div>
 					</div>
-
+ -->
 				</div>
 			</div>
 		</div>

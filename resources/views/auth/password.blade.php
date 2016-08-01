@@ -8,7 +8,8 @@
 				<div class="panel-heading">Cambiar Contrasena</div>
 				<div class="panel-body">
 					@if (session('status'))
-						<div class="alert alert-success">
+						<div class="alert alert-success bg-green white">
+							<button type="button" class="close" data-dismiss="alert"><i class="fa fa-times" aria-hidden="true"></i></button>
 							{{ session('status') }}
 						</div>
 					@endif

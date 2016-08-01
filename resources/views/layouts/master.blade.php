@@ -38,10 +38,19 @@
 	    </div><!--/.container-->
 	  </nav><!--/nav-->
 	</header><!--/header-->
+	<div class="row">
 
 			@yield('content')
-
+	
     @include('common.footer')
-
+	<div class="remodal" data-remodal-id="modal">
+  		<button data-remodal-action="close" class="remodal-close"></button>
+  		
+  			<div id="content-modal" class="modal-style"></div>
+  		
+  		<!-- <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button> -->
+  		<!-- <button data-remodal-action="confirm" class="remodal-confirm">OK</button> -->
+	</div>
+	@yield('scripts')
 </body>
 </html>

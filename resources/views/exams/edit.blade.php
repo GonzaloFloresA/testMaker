@@ -36,8 +36,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Descripcion</label>
 								<div class="col-md-9">
-									<textarea class="form-control" name="description" rows="3">  	{{ $exam->description }}
-									</textarea>
+									<textarea class="form-control" name="description" rows="3">{{ $exam->description }}</textarea>
 								</div>
 							</div>
 
@@ -45,21 +44,22 @@
 								<label class="col-md-2 control-label">Duracion</label>
 								<div class="col-md-9">
 									<select class="form-control" name="duration" id="duration" value="{{$exam->duration}}">
-										<option value="00:30:00">30 min</option>
-										<option value="01:00:00">1 hr </option>
-										<option value="01:30:00">1 hr 30 min</option>
-										<option value="02:00:00">2 hr </option>
-										<option value="02:30:00">2 hr 30 min</option>
-										<option value="03:00:00">3 hr </option>
-										<option value="03:30:00">3 hr 30 min</option>
-										<option value="04:00:00">4 hr </option>
-										<option value="04:30:00">4 hr 30 min</option>
-										<option value="05:00:00">5 hr </option>
+										@foreach($range as $duration)
+											@if($duration['selected'] == 1)
+												<option value="{{ $duration['time'] }}" selected>
+													{{ $duration['time'] }}
+												</option>
+											@else
+												<option value="{{ $duration['time'] }}">
+													{{ $duration['time'] }}
+												</option>
+											@endif
+											
+										@endforeach
+									
 									</select>
 									
-									<!-- <span class="input-group-addon">
-       	 						<span class="glyphicon glyphicon-time"></span>
-    							</span> -->
+									
 								</div>
 							</div>
 
@@ -73,10 +73,14 @@
 							
 
 							<div class="form-group">
-								<div class="col-md-6 col-md-offset-2">
+								<div class="col-md-6 col-md-offset-2 text-center">
 									<button type="submit" class="btn btn-primary">Guardar</button>
+									<a href="{{	URL:: previous() }}" class="btn btn-primary">Cancelar</a>
+
 								</div>
+								<a href="{{ url('teacher/group/'.$group.'/exam/edit/'.$exam->id.'/asign') }}" class="pull-right">Asignar Preguntas >> &nbsp &nbsp  &nbsp</a>
 							</div>
+
 					</form>
 				</div>
 			</div>

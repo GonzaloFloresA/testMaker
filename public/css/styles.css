@@ -930,3 +930,81 @@ margin: 9px auto;
 padding: 7px 0 0;
 }
 }
+.scroll-personal::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    /* border-radius: 10px; */
+    background-color: #F5F5F5;
+}
+
+.scroll-personal::-webkit-scrollbar
+{
+    width: 7px;
+    background-color: #F5F5F5;
+}
+
+.scroll-personal::-webkit-scrollbar-thumb
+{
+    /* border-radius: 10px; */
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #2ABB9B;
+}
+
+.blocked {
+  background-color:#BDC3C7;
+  color:white !important; 
+}
+a.blocked:hover{
+  background-color:#ABB7B7 !important;
+}
+
+#questions, #exam, #list-email{
+  overflow-y:auto;
+  height:310px;
+}
+
+
+#questions .active{
+  background-color:#59ABE3 !important;
+  border-color:#59ABE3 !important;
+}
+
+#exam .active{
+  background-color: #049372 !important;
+  border-color:#049372 !important;
+}
+
+#questions  a, #exam  a{
+  text-decoration:none !important;
+  color:#264348 !important;
+}
+
+.btn-menu{
+  color: white;
+  background-color:#CF3A24;
+}
+
+.group{
+  border:1px solid #049372 !important;
+  margin:2px 2px;
+  /* text-align:center; */
+}
+
+.group .team-info{
+  text-align: center;
+  margin:4px;
+}
+
+.team-info span{
+  font-size:1.4em;
+  font-style:bold;
+}
+
+.ex, .team-img {
+  background-color:#049372;
+}
+
+.team-img img{
+  margin: 0 auto;
+
+}
