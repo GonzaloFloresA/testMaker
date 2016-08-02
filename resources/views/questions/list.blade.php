@@ -24,6 +24,7 @@
 										<option value="multiple">Op. Multiple</option>
 										<option value="develop">Desarrollo</option>
 										<option value="complemento">Complemento</option>
+										<option value="falsoVerdad">Falso Verdadero</option>
 									</select>
 									</div>
   									
@@ -68,6 +69,8 @@
 													Op. Multiple
 												@elseif($question->types == 'complemento')
 													Complemento
+												@elseif($question->types == 'falsoVerdad')
+													Falso Verdadero
 												@endif
 												
 											</td>

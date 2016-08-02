@@ -20,6 +20,8 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+
+
 // Route::get('test-mail',function(){
 // 	Mail::send("emails.test",[],function($message){
 // 		$message->to('jultum88@gmail.com',"Julio Alberto")
@@ -88,6 +90,8 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 
 	Route::get('career/{id}/delete','CareerController@delete');
 	Route::resource('career','CareerController');
+
+	Route::get('pdf', 'PdfController@invoice');
 
 });
 
