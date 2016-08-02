@@ -25,7 +25,7 @@
 												<img src="{{URL::asset('images/question/icon-sm.jpeg')}}" alt="" class="img-circle" width="20px">
 											@elseif ($question->types == 'develop')
 												<img src="{{URL::asset('images/question/icon-d.jpeg')}}" alt="" class="img-circle" width="20px">
-											@elseif ($question->types == 'falseTrue')
+											@elseif ($question->types == 'falsoVerdad')
 												<img src="{{URL::asset('images/question/icon-fv.jpeg')}}" alt="" class="img-circle" width="20px">
 											@endif
 											
@@ -42,7 +42,7 @@
 											<img src="{{URL::asset('images/question/icon-sm.jpeg')}}" alt="" class="img-circle" width="20px">
 										@elseif ($question->types == 'develop')
 											<img src="{{URL::asset('images/question/icon-d.jpeg')}}" alt="" class="img-circle" width="20px">
-										@elseif ($question->types == 'falseTrue')
+										@elseif ($question->types == 'falsoVerdad')
 											<img src="{{URL::asset('images/question/icon-fv.jpeg')}}" alt="" class="img-circle" width="20px">
 										@endif
 										</a>
@@ -106,7 +106,7 @@
 											<img src="{{URL::asset('images/question/icon-sm.jpeg')}}" alt="" class="img-circle" width="20px">
 										@elseif ($question->types == 'develop')
 											<img src="{{URL::asset('images/question/icon-d.jpeg')}}" alt="" class="img-circle" width="20px">
-										@elseif ($question->types == 'falseTrue')
+										@elseif ($question->types == 'falsoVerdad')
 											<img src="{{URL::asset('images/question/icon-fv.jpeg')}}" alt="" class="img-circle" width="20px">
 										@endif
 										</a>

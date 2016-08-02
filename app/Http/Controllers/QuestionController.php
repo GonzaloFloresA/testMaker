@@ -76,6 +76,17 @@ class QuestionController extends Controller {
 	 			$question->save();
 
 	 			break;
+
+	 		case 'falsoVerdad':
+	 			//dd('entra a complemento');
+	 			$question = new Question;
+	 			$question->title = "Default Title";
+	 			$question->types = 'falsoVerdad';
+	 			$question->description = "";
+	 			$question->group_id = intval($request->get('group'));
+	 			$question->save();
+
+	 			break;
 	 		
 	 	}
 	 	return Redirect::back();
@@ -104,6 +115,9 @@ class QuestionController extends Controller {
 				$listaComplementos = $this->multiexplode(array("(x)","(/x)"), $question->description);
 				$data = array('question' => $question, 'listaComplementos' =>$listaComplementos);
 				$view = View::make('questions.showComplemento')->with($data);
+			}else if($question->types == 'falsoVerdad'){
+				
+				$view = View::make('questions.showTrueFalse')->with('question', $question);
 			}
 			
 			$sections = $view->renderSections();
@@ -124,7 +138,11 @@ class QuestionController extends Controller {
 			$listaComplementos = $this->multiexplode(array("(x)","(/x)"), $question->description);
 			// dd($listaComplementos);
 			return view('questions.showComplemento', compact('question','listaComplementos'));
+		}else if($question->types == 'falsoVerdad'){
+
+			return view('questions.showTrueFalse', compact('question'));
 		}
+
 
 		return redirect('teacher/group/'.$group.'/questions');
 		
@@ -154,6 +172,8 @@ class QuestionController extends Controller {
 			return view('questions.multiple',compact('question','group'));
 		}else if($question->types == 'complemento'){
 			return view('questions.complemento',compact('question','group'));	
+		}else if($question->types == 'falsoVerdad'){
+			return view('questions.trueFalse',compact('question','group'));
 		}
 
 		return redirect('teacher/group/'.$group.'/questions');
@@ -246,6 +266,22 @@ class QuestionController extends Controller {
 			$question->save();
 
 			return Redirect::back();
+		}else if($question->types == 'falsoVerdad'){
+
+		
+			$rules = array(
+			'title' => 'required|string',
+			'description' => 'string',
+			);
+			$this->validate($request, $rules);
+			
+
+			Session::flash('flash_message',"Los datos se han actualizado correctamente");
+			$question->title = $request['title'];
+			$question->description = $request['description'];
+			$question->save();
+
+			return Redirect::back();
 		}
 
 		return redirect('teacher/group/'.$group.'/questions');	
@@ -271,6 +307,8 @@ class QuestionController extends Controller {
 			$question->multipleQuestion->delete();
 			$question->delete();
 		}else if($question->types == 'complemento'){
+			$question->delete();
+		}else if($question->types == 'falsoVerdad'){
 			$question->delete();
 		}
 		
