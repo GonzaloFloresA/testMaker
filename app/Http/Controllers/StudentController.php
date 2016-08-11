@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection as Collection;
 use App\Student;
 use App\Course;
+use App\User;
+use App\Group;
 use Hash;
 use Session;
 use Redirect;
@@ -215,10 +217,24 @@ class StudentController extends Controller {
 			$courses->push($group->course);
 		}
 		$courses = $courses->unique();
+		$groups = $student->groups;
 		// dd($courses);
 
-		return view('courses.coursedesc', compact('courses'));
+		return view('students.mycourses', compact('courses','groups'));
 	}
+
+
+	public function myexams($id, $group_id){
+		$student = User::find($id)->student;
+		$exams = $student->exams->where('group_id',intval($group_id));
+		// dd($exams);
+		// dd($student->exams);
+		$group = Group::find($group_id);
+	
+
+		return view('students.myexams',compact('exams','group'));
+	}
+
 
 
 

@@ -71,9 +71,12 @@
 						<div class="col-md-6">
 							<h4 class="text-center">Preguntas de Examen</h4>
 							<div>
-								<button id="show_exam" class="btn btn-default btn-menu btn-sm bg-orange"  data-toggle="tooltip" title="Vista Preliminar del Examen">
+								<a id="pdf" class="btn btn-default btn-menu btn-sm bg-blue"  href="{{url('teacher/exam/'.$exam->id.'/pdf')}}" target="_blank" data-toggle="tooltip" title="Ver PDF">
+									<i class="fa fa-print" aria-hidden="true"></i>
+								</a>
+								<a href="{{ url('teacher/group/'.$group.'/exam/'.$exam->id.'/show') }}" id="show_exam" class="btn btn-default btn-menu btn-sm bg-orange"  data-toggle="tooltip" title="Vista Preliminar del Examen">
 									<i class="fa fa-eye" aria-hidden="true"></i>
-								</button>
+								</a>
 								<button id="edit_percent" class="btn btn-default btn-menu btn-sm bg-maroon"  data-toggle="tooltip" title="Puntaje por defecto">
 									<i class="fa fa-percent" aria-hidden="true"></i>
 								</button>
@@ -127,9 +130,10 @@
 								@endforeach
 							</ul>
 							<div class="form-group">
-								<div class="col-md-6 col-md-offset-2 text-center">
+								<div class="col-md-12  text-center">
 									<button type="submit" class="btn btn-primary">Guardar</button>
-									<!-- <a href="{{	URL:: previous() }}" class="btn btn-primary">Cancelar</a> -->
+									<a href="{{	url('teacher/group/'.$group.'/exams')}}" class="btn btn-primary">Volver</a>
+									<a href="{{	url('teacher/group/'.$group.'/exam/'.$exam->id.'/terminate')}}" class="btn btn-primary">Terminar Edicion</a>
 								</div>
 							</div>
 							</form>

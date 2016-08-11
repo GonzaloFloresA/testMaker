@@ -12,6 +12,7 @@
 
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('teacher/group/'.$group.'/exam/edit/'.$exam->id) }}">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+							
 							<div class="form-group">
 								<label class="col-md-2 control-label">Materia</label>
 								<div class="col-md-9">
@@ -27,9 +28,25 @@
 							</div>
 
 							<div class="form-group">
+								<label class="col-md-2 control-label">Titulo</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" name="title" value="{{ $exam->title}}">
+								</div>
+							</div>
+
+							<div class="form-group">
 								<label class="col-md-2 control-label">Tipo</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="type" value="{{ $exam->type}}">
+									<select class="form-control" name="types" id="types" value="">
+									@if($exam->isPresential())
+										<option value="presential" selected>Presencial</option>
+										<option value="online">En Linea</option>
+									@else
+										<option value="presential">Presencial</option>
+										<option value="online" selected>En Linea</option>
+									@endif
+												
+									</select>
 								</div>
 							</div>
 
@@ -40,36 +57,43 @@
 								</div>
 							</div>
 
+
+							@if($exam->isPresential())
+								<fieldset id="info_online" style="display:none;">
+							@else
+								<fieldset id="info_online" >
+							@endif
+							
+							<legend>Informacion Examen en Linea</legend>
 							<div class="form-group">
-								<label class="col-md-2 control-label">Duracion</label>
-								<div class="col-md-9">
-									<select class="form-control" name="duration" id="duration" value="{{$exam->duration}}">
-										@foreach($range as $duration)
-											@if($duration['selected'] == 1)
-												<option value="{{ $duration['time'] }}" selected>
-													{{ $duration['time'] }}
-												</option>
-											@else
-												<option value="{{ $duration['time'] }}">
-													{{ $duration['time'] }}
-												</option>
-											@endif
-											
-										@endforeach
-									
-									</select>
-									
-									
+								<label class="col-md-2 control-label">Fecha</label>
+								<div class="col-md-9 ">
+									<input  id="date" type="text" class="form-control" name="date_exam" value="{{$exam->getDate()}}" >
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-2 control-label">Hora de Inicio</label>
+								<label class="col-md-2 control-label">Hora Inicio</label>
 								<div class="col-md-9 clockpicker">
-									<input type="text" class="form-control" name="time_start" value="{{ date_format(date_create($exam->time_start), 'H:i')}}" >
+									<input type="text" class="form-control" name="time_start" value="{{$exam->getStartTime()}}" >
 								</div>
 							</div>
 
+							<div class="form-group">
+								<label class="col-md-2 control-label">Hora Final</label>
+								<div class="col-md-9 clockpicker">
+									<input type="text" class="form-control" name="duration" value="{{$exam->getEndTime()}}" >
+								</div>
+							</div>
+
+					
+							<div class="form-group">
+								<label class="col-md-2 control-label">Ponderacion de la Nota</label>
+								<div class="col-md-9">
+									<input type="number" class="form-control" name="total" min="0" max="100" value="{{ $exam->total }}">
+								</div>
+							</div>
+							</fieldset>
 							
 
 							<div class="form-group">
@@ -89,5 +113,42 @@
 </div>
 
 
+
+@endsection
+
+@section('scripts')
+<script src="{{URL::asset('js/bootstrap-datetimepicker.min.js')}}"></script>
+
+ <script type="text/javascript">
+ 	$('#date').datetimepicker({
+ 		format:'YYYY-MM-DD'
+ 	});
+ </script>
+
+
+ <script type="text/javascript">
+
+	function showInfoOnline(){
+		$('#info_online').show();
+	}
+
+	function hideInfoOnline(){
+		$('#info_online').hide()
+	}
+
+	$('#types').change(function(){
+		var option =$("#types option:selected").val(); 
+		// alert(option);
+		if(option == 'presential'){
+			hideInfoOnline();
+		}else if(option == 'online'){
+			showInfoOnline();
+		}
+	});
+
+	// hideInfoOnline();
+
+
+</script>
 
 @endsection

@@ -120,10 +120,10 @@ $("body").on("change", "#exam input[type='number']", function(){
 	that.val(id+"_"+$(this).val());
 });
 
-$("#show_exam").click(function(e){
-	e.preventDefault();
-	alert("vista previa del examen generado");
-});
+// $("#show_exam").click(function(e){
+// 	e.preventDefault();
+// 	alert("vista previa del examen generado");
+// });
 
 $("#edit_percent").click(function(e){
 	e.preventDefault();

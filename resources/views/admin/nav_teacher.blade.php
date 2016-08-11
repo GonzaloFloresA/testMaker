@@ -8,8 +8,8 @@
         <i class="fa fa-users" aria-hidden="true"></i> Estudiantes <b class="caret"></b>
       </a>
       <ul class="dropdown-menu">
-        <!-- <li> <a href="teacher/student">Todos</a></li>
-        <li> <a href="teacher/student">Grupos</a></li>
+         <li> <a href="{{url('teacher/'.Auth::user()->id.'/student/list')}}">Todos</a></li>
+       <!-- <li> <a href="teacher/student">Grupos</a></li>
         <li> <a href="#">Ingenieria Informatica</a></li>
         <li> <a href="#">Ingenieria de Sistemas</a></li> -->
       </ul>

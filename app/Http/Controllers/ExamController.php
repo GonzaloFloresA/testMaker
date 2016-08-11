@@ -57,26 +57,59 @@ class ExamController extends Controller {
 	{
 		// $data = date_create($request->get("time_start"));
 		// dd(date_format($data, 'H:i:s'));
-
-		$rules = array(
+		
+		
+		// dd($date_start, $date_end, $date_start->format('Y-m-d H:i:s'), $date_end->format('Y-m-d H:i:s'),$date_start->diff($date_end)->format("%H:%I:%S"));
+		if($request->get('types') == 'presential'){
+			$rules = array(
 			'course' => 'required|string',
 			'institution' => 'required|string',
-			'type' => 'string',
-			'duration' => 'date_format:H:i:s',
-			'time_start' => 'date_format:H:i',
-			'description' => 'string'
+			'title' => 'string',
+			'types' => 'required|in:online,presential',
+			'description' => 'string',
+			);
+		
+
+		}else if($request->get('types') == 'online'){
+			$rules = array(
+			'course' => 'required|string',
+			'institution' => 'required|string',
+			'title' => 'string',
+			'types' => 'required|in:online,presential',
+			'description' => 'string',
+			'date_exam' =>'required|date_format:Y-m-d|after:tomorrow',
+			'time_start' => 'required|date_format:"H:i"|before:duration',
+			'duration' => 'required|date_format:"H:i"|after:time_start',
+			'total' => 'required|min:0|max:100',
 			);
 
+		}
+		
 		$this->validate($request, $rules);
-
+		
+		
 		$exam = new Exam;
 		$exam->group_id = $group;	
 		$exam->name_course = $request['course'];
 		$exam->institution = $request['institution'];
-		$exam->type = $request['type'];
-		$exam->duration = $request['duration'];
-		$exam->time_start = $request['time_start'];
+		$exam->title = $request['title'];
+		$exam->types = $request['types'];
 		$exam->description = trim($request['description']);
+
+		if($request->get('types') == 'online'){
+			$date_exam = $request->get('date_exam');
+			$start = $request->get('time_start');
+			$end = $request->get('duration');
+			$date_start = new DateTime($date_exam." ".$start);
+			$date_end = new DateTime($date_exam." ".$end);
+			$exam->time_start = $date_start->format('Y-m-d H:i:s');
+			$exam->duration = $date_end->format('Y-m-d H:i:s');
+		}else{
+			$exam->time_start = "";
+			$exam->duration ="";
+		}
+			
+		$exam->total = $request['total'];
 		$exam->save();
 		Session::flash('flash_message',"El examen se ha creado de forma exitosa");
 		
@@ -90,9 +123,11 @@ class ExamController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($group, $id)
 	{
-		//
+		$exam = Exam::find($id);
+
+		return view('exams.show',compact('exam','group'));
 	}
 
 	/**
@@ -104,9 +139,10 @@ class ExamController extends Controller {
 	public function edit($group,$id)
 	{
 		$exam = Exam::find($id);
-		$range = $this->getRangeTime($exam->duration);
+		// $range = $this->getRangeTime($exam->duration);
+		// $group = Group::find($group_id);
 		// dd($exam);
-		return view('exams.edit',compact('group','exam','range'));
+		return view('exams.edit',compact('group','exam'));
 	}
 
 	public function getRangeTime($duration){
@@ -138,28 +174,65 @@ class ExamController extends Controller {
 	public function update(Request $request, $group, $id)
 	{
 		$exam = Exam::find($id);
-		$rules = array(
+		if($request->get('types') == 'presential'){
+			$rules = array(
 			'course' => 'required|string',
 			'institution' => 'required|string',
-			'type' => 'string',
-			'duration' => 'date_format:H:i:s',
-			'time_start' => 'date_format:H:i',
-			'description' => 'string'
-			);
+			'title' => 'string',
+			'types' => 'required|in:online,presential',
+			'description' => 'string',
+			);	
 
+		}else if($request->get('types') == 'online'){
+			$rules = array(
+			'course' => 'required|string',
+			'institution' => 'required|string',
+			'title' => 'string',
+			'types' => 'required|in:online,presential',
+			'description' => 'string',
+			'date_exam' =>'required|date_format:Y-m-d|after:tomorrow',
+			'time_start' => 'required|date_format:"H:i"|before:duration',
+			'duration' => 'required|date_format:"H:i"|after:time_start',
+			'total' => 'required|min:0|max:100',
+			);
+		}
+		
 		$this->validate($request, $rules);
 
+		$exam->group_id = $group;	
 		$exam->name_course = $request['course'];
 		$exam->institution = $request['institution'];
-		$exam->type = $request['type'];
-		$exam->duration = $request['duration'];
-		$exam->time_start = $request['time_start'];
+		$exam->title = $request['title'];
+		$exam->types = $request['types'];
 		$exam->description = trim($request['description']);
+
+		if($request->get('types') == 'online'){
+			$date_exam = $request->get('date_exam');
+			$start = $request->get('time_start');
+			$end = $request->get('duration');
+			$date_start = new DateTime($date_exam." ".$start);
+			$date_end = new DateTime($date_exam." ".$end);
+			$exam->time_start = $date_start->format('Y-m-d H:i:s');
+			$exam->duration = $date_end->format('Y-m-d H:i:s');
+		}else{
+			$exam->time_start = "";
+			$exam->duration ="";
+		}
+			
+		$exam->total = $request['total'];
 		$exam->save();
+
 		Session::flash('flash_message',"Los datos se han actualizado exitosamente");
 		
 		return redirect('teacher/group/'.$group.'/exams');
 
+	}
+
+	public function delete($group_id, $id){
+		$group = Group::find($group_id);
+		$exam = Exam::find($id);
+
+		return view('exams.eliminate', compact('group','exam'));
 	}
 
 	/**
@@ -171,6 +244,7 @@ class ExamController extends Controller {
 	public function destroy($group, $id)
 	{
 		$exam = Exam::find($id);
+		$exam->questions()->detach();
 		$exam->delete();
 		Session::flash('flash_message',"Se ha eliminado el examen");
 		
@@ -277,6 +351,21 @@ class ExamController extends Controller {
 			$i++;
 		}
 		return $questions;
+	}
+
+	public function terminateEdition($group,$id){
+		$exam = Exam::find($id);
+		$notifications = [];
+		if($exam->stateEdition() && $exam->isValid()){
+			$exam->state = 'terminate';
+			$exam->save();
+			Session::flash('flash_message',"Los datos se han guardado correctamente");
+			return redirect('teacher/group/'.$group.'/exams');;
+		}else{
+			$notifications[] = "El examen no esta en estado de edicion o el puntaje del mismo no es 100";
+			return Redirect::back()->withErrors($notifications);
+		}
+		dd('terminando edicion');
 	}
 
 

@@ -268,8 +268,19 @@ class TeacherController extends Controller {
 		return view('groups.details',compact('groups','name_course'));
 	}
 
-	public function mystudents($id){
 
+	public function mystudents(Request $request, $id){
+		
+		$teacher = Teacher::where('user_id','=',$id)->first();
+		$groups = $teacher->groups;
+		if($request->get('group_id') == null){
+			$group_selected = $groups->first();
+		}else{
+			$group_selected = Group::find($request->get('group_id'));
+		}
+	
+		// dd($groups);
+		return view('teachers.mystudents',compact('groups','group_selected'));
 	}
 
 	public function myquestions($group){
@@ -279,10 +290,33 @@ class TeacherController extends Controller {
 		return view('questions.list',compact('questions','group'));
 	}
 
-	public function myexams($group){
-		$exams = Exam::where('group_id','=',$group)->get();
-
+	public function myexams($group_id){
+		$exams = Exam::where('group_id','=',$group_id)->get();
+		$group = Group::find($group_id);
 		return view('exams.list',compact('group','exams'));
+	}
+
+
+	public function publicate($group_id, $id){
+
+	 //$exam->questions()->attach($question[0], array('percent'=> $question[1], 'order' => $question[2]));
+		$exam = Exam::find($id);
+		$notifications = [];
+		if($exam->isOnline() && $exam->isValid() && $exam->stateTerminate()){
+			$group = Group::find($group_id);
+			// dd($group->students);
+			foreach ($group->students as $student) {
+				$exam->students()->attach($student->id);
+			}
+			$exam->state = 'publicate';
+			$exam->save();
+			Session::flash('flash_message', "El examen ha sido publicado correctamente");	
+		}else{
+			$notifications[] = "El puntaje de su examen no es 100";		
+		}
+
+		return Redirect::back()->withErrors($notifications);	
+		
 	}
 
 }

@@ -958,7 +958,7 @@ a.blocked:hover{
   background-color:#ABB7B7 !important;
 }
 
-#questions, #exam, #list-email{
+#questions, #exam, #list-email,#q_complement{
   overflow-y:auto;
   height:310px;
 }
@@ -1007,4 +1007,55 @@ a.blocked:hover{
 .team-img img{
   margin: 0 auto;
 
+}
+
+div #q_complement{
+  border: 1px solid silver;
+  padding: 0px 10px;
+  height: 100px;
+}
+
+#q_complement .complement{
+  color: black;
+  text-decoration: bold;
+  border-style: dashed;
+  border-width: 1px;
+  background-color: silver;
+}
+
+.span_editable{
+  border-style: dotted;
+  border-bottom: 1px dotted black;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  background-color: #89C4F4 !important;
+  min-width:50px !important;
+  height: 1.5em !important;
+}
+
+.show_question{
+  margin-top: 0.7em;
+  border-bottom: 3px solid #2ABB9B;
+  text-align: justify;
+  padding-bottom: 4em 0;
+  /* border-top: 1px solid blue; */
+}
+
+.show_question p{
+  display: inline;
+  /* padding: 0 1px; */
+}
+
+.options ul li{
+  list-style: none;
+  
+}
+
+.options ul li p{
+  text-indent: 1em;
+}
+
+.exam_info .personal{
+  background-color: #6AF9D8;
 }

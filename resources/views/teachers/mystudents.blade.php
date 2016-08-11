@@ -3,71 +3,40 @@
 @section('content')
 <div class="container-fluid">
 	<div class="row">
+		@include('common.messages')
+		@include('common.error')
 		<div class="col-md-10 col-md-offset-1">
-			@include('common.messages')
-			@include('common.error')
-			<div class="panel panel-default">
-
-				<div class="panel-heading" >
-					<div class="row">
-						<div class="col-md-2">
-							Inscribir Estudiante
-						</div>
-						<div class="col-md-4">
-							<div class="row">
-								<a href="{{ url('admin/group/excel') }}" class="btn btn-success" data-toggle="tooltip" title="Crear a partir de excel">
-									<i class="fa fa-table" aria-hidden="true"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="panel-body">		
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-							<form class="" action="{{ url('admin/group/'.$group->id.'/registerstudent') }}" method="POST">
-								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                <div class="row">
-                	<div class="col-md-12">
-                		<div class="form-group">
-											<label for="student">Cod Sis Estudiante</label>
-                  		<select multiple class="form-control" name="student">
-                    		@foreach($students_all as $student)
-                      			<option value="{{$student->id}}">{{$student->cod_sis}}</option>
-                    		@endforeach
-                  		</select>
-                		</div>
-                	</div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-2 col-md-offset-5">
-                  	<div class="form-group">
-                    	<button class="btn btn-primary" type="submit" name="button">Inscribir</button>
-                  	</div>
-                  </div>
-                </div>
-
-              </form>
-            </div>
-          </div>
-				</div>
-
-			</div>
-
-			<div class="panel panel-default">
+			
+					<div class="panel panel-default">
 
 				<div class="panel-heading" >
 					
 					<div class="row">
-						<div class="col-md-11">
-							Lista de Estudiantes del grupo <strong>{{$group->nro}}</strong> de la materia de <strong>{{ $group->course->name }}.</strong>
+						<div class="col-md-7">
+							Lista de Estudiantes del grupo <strong>{{$group_selected->nro}}</strong> de la materia de <strong>{{$group_selected->course->name }}.</strong>
 						</div>
+	
+						<div class="col-md-4" >
+							<div class="row">
+              <form class="form-inline" action="{{url('teacher/'.Auth::user()->id.'/student/list')}}" method="get" id="form-users">
+								<div class="form-group">
+									<select class="form-control" name="group_id">
+										<option disabled selected>Escoja un grupo</option>
+										@foreach($groups as $group)
+											<option value="{{$group->id}}">{{$group->course->name}} G{{$group->nro}}</option>
+										@endforeach
+									</select>
+									</div>
+									<div class="form-group">
+										<button type="submit" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i></button>
+									</div>
+              </form>
+							</div>
+            </div>
+						
 						<div class="col-md-1">
 							<div class="row">
-								<button class="btn btn-success" formaction="{{ url('admin/user/create/email') }}" form="form-email" data-toggle="tooltip" title="Enviar Correo.">
+								<button class="btn btn-success" formaction="{{ url('teacher/user/create/email') }}" form="form-email" data-toggle="tooltip" title="Enviar Correo.">
 									<i class="fa fa-envelope-o" aria-hidden="true"></i>
 								</button>
 								<button class="btn btn-success" data-toggle="tooltip" title="Seleccionar Todo" id="select-all">
@@ -92,7 +61,7 @@
             <tbody>
             	<form action="" method="post" id="form-email">
             		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-            		@foreach($students as $student)
+            		@foreach($group_selected->students->sortByDesc('user_id') as $student)
 
             			@if($student->user_id == 0)
 										<tr>
@@ -138,10 +107,12 @@
 				</div>
 
 			</div>
+	
 
-		</div>
-	</div> 
-</div>
+
+				</div>
+			</div>
+		
 @endsection
 
 @section('scripts')

@@ -23,6 +23,10 @@ class Student extends Model {
 								->withPivot('anio','semester');
 	}
 
+	public function exams(){
+		return $this->belongsToMany('App\Exam')->withPivot('response_id');
+	}
+
 	public function scopeCodsis($query, $cod_sis){
 		if(trim($cod_sis) != ""){
 			$query->where('cod_sis', "LIKE", "%$cod_sis%");
