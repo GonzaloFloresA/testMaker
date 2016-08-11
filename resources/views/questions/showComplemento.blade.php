@@ -10,28 +10,28 @@
 					@include('common.messages')
 					@include('common.error')
 
-					<div class="row bg-silver" >
-						<div class="col-md-10 col-md-offset-1">
-							<p style="text-align:justify;"> <strong> Pregunta: </strong>
-								{{ $question->description }}	
-							</p>
-							@for ($i=0; $i < count($listaComplementos); $i++)  
-	
-								@if($i%2==0)
-									{{ $listaComplementos[$i] }}
-								@else
-									<input  type="text" name="resp[]" id="content">
-								@endif
-							@endfor
+					<div class="row " >
+						<div class="col-md-10 col-md-offset-1 bg-silver">
+							<strong> Pregunta: </strong>
+							<form action="{{url('teacher/group/'.$group.'/question/verify/'.$question->id)}}" method="POST">
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+							<div  style="text-align:justify;"> 
+								
+								{!! $description !!}	
+								
+							</div>
+							
 						</div>
 					</div>
 					<p></p>
 					<div class="form-group">
-						<div class="col-sm-offset-5 col-sm-10">	
-							<a class="btn btn-primary" href="{{url('teacher/group/'.$question->group_id.'/questions')}}">Volver	</a>
-								
-						</div>
-					</div>				
+									<div class="text-center">	
+										<button class="btn btn-primary" type="submit">	Verificar Respuesta
+										</button>
+										<a href="{{	url('teacher/group/'.$group.'/questions') }}" class="btn btn-primary">Volver</a>
+									</div>
+								</div>
+								</form>				
 	
 				</div>
 				
@@ -44,24 +44,22 @@
 @section('ajax')
 	<div class="panel panel-default">
 				<div class="panel-heading" >{{ $question->title }}</div>
-				<div class="panel-body">
+				<div class="panel-body">	
 				
-
-					<div class="row bg-silver" >
-						<div class="col-md-10 col-md-offset-1">
-							<p style="text-align:justify;"> <strong> Pregunta: </strong>
-								{{ $question->description }}	
-							</p>
-							@for ($i=0; $i < count($listaComplementos); $i++)  
-	
-								@if($i%2==0)
-									{{ $listaComplementos[$i] }}
-								@else
-									<input  type="text" name="resp[]" id="content">
-								@endif
-							@endfor
+					<div class="row " >
+						<div class="col-md-10 col-md-offset-1 bg-silver">
+							<strong> Pregunta: </strong>
+							<form action="{{url('teacher/group/'.$group.'/question/verify/'.$question->id)}}" method="POST">
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+							<div  style="text-align:justify;"> 
+								
+								{!! $description !!}	
+								
+							</div>
+							
 						</div>
 					</div>
+
 					<p></p>
 								
 	
@@ -69,4 +67,20 @@
 				
 			</div>
 
+@endsection
+
+
+@section('scripts')
+<script>
+$('body').on('blur','span.span_editable',function(){
+	var id = $(this).attr('id');
+	var text = $(this).html();
+	text = text.replace(/&nbsp;/gi,'');
+	text = text.replace(/\s/gi,'');
+	// alert(id);
+	$('#_'+id).val(text);
+	// $('#cont').val('gato');
+});	
+	
+</script>
 @endsection

@@ -31,7 +31,7 @@
 						<div class="col-sm-offset-2 col-sm-10">	
 							<button class="btn btn-primary" type="submit">	Guardar
 							</button>
-							<a href="{{	url('teacher/group/'.$group.'/questions') }}" class="btn btn-primary">Cancelar</a>
+							<a href="{{	url('teacher/group/'.$group.'/questions') }}" class="btn btn-primary">Volver</a>
 						</div>
 					</div>
 				</form>

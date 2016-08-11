@@ -20,6 +20,8 @@ class Teacher extends Model {
 		return $this->hasMany('App\Group');
 	}
 
+	
+
 	public function scopeCodsis($query, $cod_sis){
 		if(trim($cod_sis) != ""){
 			$query->where('cod_sis', "LIKE", "%$cod_sis%");

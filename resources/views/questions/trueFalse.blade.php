@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading" >Editar pregunta de falso/verdad</div>
+				<div class="panel-heading" >Editar pregunta de tipo Falso/Verdadero</div>
 				<div class="panel-body">
 					@include('common.messages')
 					@include('common.error')
@@ -24,16 +24,31 @@
 						<label for="title" class="col-sm-2">Enunciado</label>		
 						<div class="col-sm-10">					
 							<input class="form-control" type="text" name="description" id="description" value="{{ $question->description }}">
-
-							<input type="radio" name="boletin" value="si" checked onClick="habilita(this.form)"> verdad
-<input type="radio" name="boletin" value="no" onClick="deshabilita(this.form)"> falso
 						</div>		
-					</div>					
+					</div>	
+
+					<div class="form-group">
+						<label for="title" class="col-sm-2"></label>
+						<div class="col-sm-1">
+							<span class="input-group-addon">
+
+								@if($question->credible == 1)
+									<input type="radio" name="credible" value="1" checked> Verdad
+									<input type="radio" name="credible" value="0" > Falso	
+								@else
+									<input type="radio" name="credible" value="1" > Verdad
+									<input type="radio" name="credible" value="0" checked> Falso	
+								@endif
+								
+							</span>			
+						</div>
+					</div>						
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">	
 							<button class="btn btn-primary" type="submit">	Guardar
 							</button>
+							<a href="{{	url('teacher/group/'.$group.'/questions') }}" class="btn btn-primary">Volver</a>
 						</div>
 					</div>
 				</form>

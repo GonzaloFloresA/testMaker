@@ -30,6 +30,7 @@
     <script src="{{URL::asset('js/custom-scripts.js')}}"></script>
     <script src="{{URL::asset('js/photo.js')}}"></script>
     <script src="{{URL::asset('js/clockpicker.js')}}"></script>
+    <script src="{{URL::asset('js/moment.js')}}"></script>
     <script src="{{URL::asset('js/remodal.js')}}"></script>
     <!-- <script src="{{URL::asset('js/jquery.mCustomScrollbar.concat.min.js')}}"></script> -->
     <!-- <script src="{{URL::asset('contact/jqBootstrapValidation.js')}}"></script> -->

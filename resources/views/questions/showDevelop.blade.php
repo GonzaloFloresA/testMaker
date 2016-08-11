@@ -16,6 +16,12 @@
 								{{ $question->description }}	
 							</p>
 						</div>
+
+						<div class="form-group">
+									<div class="text-center">	
+										<a href="{{	url('teacher/group/'.$group.'/questions') }}" class="btn btn-primary">Volver</a>
+									</div>
+								</div>
 					</div>
 
 				</div>

@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection as Collection;
 use App\User;
 use App\Teacher;
 use App\Student;
@@ -319,24 +320,30 @@ class GroupController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		$groups = Group::where('course_id','=',$request->get('course'))->get();
-		$max = $groups->max('nro');
-		if($max === null){
-			$max = 1;
-			//dd("no existen grupos de esta materia");
+		if($request->get('course') && $request->get('teacher')){
+
+		
+			$groups = Group::where('course_id','=',$request->get('course'))->get();
+			$max = $groups->max('nro');
+			if($max === null){
+				$max = 1;
+				//dd("no existen grupos de esta materia");
+			}else{
+				++$max;
+				// dd("el grupo mas reciente es ".$max." el siguiente sera ".++$max);
+			}
+			$group = new Group;
+			$group->course_id = $request->get('course');
+			$group->teacher_id = $request->get('teacher');
+			$group->nro = $max;
+			$group->save();
+			// dd($groups->max('nro'));
+			Session::flash('flash_message',"Se ha creado un nuevo grupo...");
 		}else{
-			++$max;
-			// dd("el grupo mas reciente es ".$max." el siguiente sera ".++$max);
+			Session::flash('warnings',"Tienes que escoger un docente y una materia.");
 		}
-		$group = new Group;
-		$group->course_id = $request->get('course');
-		$group->teacher_id = $request->get('teacher');
-		$group->nro = $max;
-		$group->save();
-		// dd($groups->max('nro'));
-		Session::flash('flash_message',"Se ha creado un nuevo grupo...");
-		return redirect('admin/group');
-		// return "del docente".$request->get('teacher')." y el de curso ".$request->get('course');
+			return redirect('admin/group');
+			// return "del docente".$request->get('teacher')." y el de curso ".$request->get('course');
 	}
 
 	/**
@@ -347,22 +354,31 @@ class GroupController extends Controller {
 	 */
 	public function show($id)
 	{
-		$group = $id;
+		$group = Group::find($id);
+		
+		// dd($group->students);
+		$students = $group->students->sortByDesc('user_id');
+		// $autentify_students = new Collection;
 
-		$users = DB::table('group_student')
-            
-            ->join('students', 'students.id', '=', 'group_student.student_id')
-            ->join('users', 'users.id', '=', 'students.user_id')
-            ->select('group_student.anio','group_student.semester','users.id','users.name','users.email','users.active', 'users.type','users.user_img')
-            ->where('group_student.group_id',$id)
-            ->get();
+		// foreach($group->students as $student){
+		// 	if($student->user_id != 0){
+		// 		$autentify_students->push($student);
+		// 	}
+		// }
 
-        $students = Student::all();
-		return view("groups.groupView", compact('users','group','students'));
+		// dd($autentify_students);
+		// dd($students);
+        $students_all = Student::all();
+		return view("groups.groupView", compact('students_all','students','group'));
 	}
 
-	public function registerstudent(Request $request, $id){
+	public function registerstudent($id, Request $request ){
+		// dd($id);
+
+		$this->validate($request, array('student' => 'required|integer'));
+
 		$student_id = $request->get('student');
+		
 		$group = Group::find($id);
 
 		if(!$group->students->contains($student_id)){

@@ -91,7 +91,7 @@ Route::group(['middleware'=>['auth','activate','admin'], 'prefix' => 'admin'], f
 	Route::get('career/{id}/delete','CareerController@delete');
 	Route::resource('career','CareerController');
 
-	Route::get('pdf', 'PdfController@invoice');
+	
 
 });
 
@@ -108,22 +108,36 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 		Route::post('group/{group}/exam/create','ExamController@store');
 		Route::get('group/{group}/exam/edit/{id}','ExamController@edit');
 		Route::post('group/{group}/exam/edit/{id}','ExamController@update');
-		Route::get('group/{group}/exam/delete/{id}','ExamController@destroy');
+		Route::get('group/{group}/exam/delete/{id}','ExamController@delete');
+		Route::post('group/{group}/exam/delete/{id}','ExamController@destroy');
 
 		Route::get('group/{group}/exam/edit/{id}/asign','ExamController@asign');
 		Route::post('group/{group}/exam/edit/{id}/asign','ExamController@populate');
+		Route::get('group/{group}/exam/{id}/terminate','ExamController@terminateEdition');
+
+		Route::get('group/{group}/exam/{id}/show','ExamController@show');
+		Route::get('group/{group}/exam/{id}/publicate', 'TeacherController@publicate');
 
 		Route::get('group/{group}/question/store','QuestionController@store');
 		Route::get('group/{group}/question/show/{id}','QuestionController@show');
 		Route::get('group/{group}/question/edit/{id}','QuestionController@edit');
 		Route::post('group/{group}/question/edit/{id}','QuestionController@update');
-		Route::get('group/{group}/question/delete/{id}','QuestionController@destroy');
+		Route::get('group/{group}/question/delete/{id}','QuestionController@delete');
+		Route::post('group/{group}/question/delete/{id}','QuestionController@destroy');
+		Route::post('group/{group}/question/verify/{id}','QuestionController@verifyResponse');
+
+		Route::get('/{teacher}/student/list','TeacherController@mystudents');
+		Route::post('user/create/email', 'UserController@createEmail');
+		Route::post('user/send/email', 'UserController@sendEmail');
+
+		Route::get('/exam/{id}/pdf', 'PdfController@invoice');
 
 });
 
 // rutas permitidas para el usuario tipo estudiante (student)
 Route::group(['middleware'=>['auth','student'], 'prefix' => 'student'], function(){
-	// Route::get('/', 'WelcomeController@index');
 		Route::get('/', 'WelcomeController@index');
 		Route::get('/{id}/course', 'StudentController@mycourses');
+		Route::get('/{id}/group/{group}','StudentController@myexams');
+
 });

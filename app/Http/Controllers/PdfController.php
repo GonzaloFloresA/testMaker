@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App;
 use View;
+use App\Exam;
+use App\Question;
 class PdfController extends Controller {
 
 	/**
@@ -82,14 +84,26 @@ class PdfController extends Controller {
 		//
 	}
 
-	public function invoice(){
-		$data = $this->getData();
-        $date = date('Y-m-d');
-        $invoice = "2222";
+	public function invoice($id){
+		$exam = Exam::find($id);
+		
+		// $questions_order = Question::join('exam_question','questions.id','=','exam_question.question_id')
+		// 						->where('exam_question.exam_id','=',$id)->orderBy('exam_question.order','asc')->get();
+
+		// $questions_order = $exam->questions;
+
+		$questions_order = $exam->questions->sortBy(function($question){
+			return $question->pivot->order;
+		});
+
+		// dd($exam->questions, $questions_order);
 		$pdf = App::make('dompdf.wrapper');
-		$view =  View::make('admin.invoice', compact('data', 'date', 'invoice'));
-		$pdf->loadHTML($view);
-		return $pdf->stream('invoice');
+		// dd($title);
+		// $view =  View::make('admin.invoice', compact('data', 'date', 'invoice'));
+		$saludos = "saludos desde pdf";
+		$view= View::make('pdfs.exam', compact('exam','questions_order'));
+		$pdf->loadHTML($view);//->setPaper('a4', 'landscape');
+		return $pdf->stream('examen.pdf',array('Attachment'=>0));
 	}	
 
 	 public function getData() 

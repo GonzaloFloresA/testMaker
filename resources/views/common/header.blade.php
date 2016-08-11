@@ -8,6 +8,7 @@
   <link href="{{URL::asset('css/photo.css')}}" rel="stylesheet">
   <link href="{{URL::asset('css/colors.css')}}" rel="stylesheet">
   <link href="{{URL::asset('css/clockpicker.css')}}" rel="stylesheet">
+  <link href="{{URL::asset('css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet">
   <!-- <link href="{{URL::asset('css/jquery.mCustomScrollbar.css')}}" rel="stylesheet"> -->
   <link href="{{URL::asset('css/remodal.css')}}" rel="stylesheet">
   <link href="{{URL::asset('css/remodal-default-theme.css')}}" rel="stylesheet">
