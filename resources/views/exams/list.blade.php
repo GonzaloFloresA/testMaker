@@ -31,6 +31,7 @@
 									<th class="text-center">Tipo</th>
 									<th class="text-center">Puntaje</th>
 									<th class="text-center">% Nota</th>
+									<th class="text-center">Intentos</th>
 									<th class="text-center">Fecha</th>
 									<th class="text-center">Hora Inicio</th>
 									<th class="text-center">Hora Fin</th>
@@ -54,32 +55,35 @@
 										<td>{{$exam->totalPercent()}}</td>
 										@if($exam->isOnline())
 											<td>{{$exam->total}}</td>
+											<td>{{$exam->intents}}</td>
 											<td>{{$exam->getDate()}}</td>
 											<td>{{$exam->getStartTime()}}</td>
 											<td>{{$exam->getEndTime()}}</td>
 										@else
-											<td class="active" colspan="4"></td>
+											<td class="active" colspan="5"></td>
 										
 										@endif
 										
 										<td class="text-center">
 											@if($exam->state == 'edition')
-												<span class="label label-primary">
-													{{$exam->state}}
+												<span class="label label-primary bg-blue">
+													Edicion
 												</span>
 											@elseif($exam->state == 'terminate')
-												<span class="label label-default">
-													{{$exam->state}}
+												<span class="label label-default bg-gray">
+													Terminado
 												</span>
 											@elseif($exam->state == 'publicate')
-												<span class="label label-warning">
-													{{$exam->state}}
+												<span class="label label-warning bg-maroon">
+													Publicado
 												</span>
 											@endif
 										</td>
+										
+										
 										<td class="text-center">
 
-											<a href="{{ url('teacher/group/'.$group->id.'/exam/'.$exam->id.'/show') }}" id="show_exam" class="btn btn-default btn-delete  bg-maroon"  data-toggle="tooltip" title="Vista Preliminar del Examen">
+											<a href="{{ url('teacher/group/'.$group->id.'/exam/'.$exam->id.'/show') }}" id="show_exam" class="btn btn-default btn-delete  bg-orange"  data-toggle="tooltip" title="Vista Preliminar del Examen">
 											<i class="fa fa-eye" aria-hidden="true"></i>
 											</a>
 
@@ -98,7 +102,7 @@
 											</a>
 
 											@if($exam->isOnline() && $exam->stateTerminate())
-											<a  href="{{ url('teacher/group/'.$group->id.'/exam/'.$exam->id.'/publicate') }}" class="btn btn-default btn-delete bg-orange" data-toggle="tooltip" title="Publicar Examen">
+											<a  href="{{ url('teacher/group/'.$group->id.'/exam/'.$exam->id.'/publicate') }}" class="btn btn-default btn-delete bg-maroon" data-toggle="tooltip" title="Publicar Examen">
 												<i class="fa fa-paper-plane" aria-hidden="true"></i>
 											</a>
 											@endif

@@ -10,6 +10,8 @@ use App\Course;
 use App\Group;
 use App\Question;
 use App\Exam;
+use App\Evaluation;
+use Mail;
 use Hash;
 use Session;
 use Redirect;
@@ -265,7 +267,7 @@ class TeacherController extends Controller {
 		$name_course = Course::where('id','=',$course)->first()->name;
 		$groups = Group::where('teacher_id','=',$id)->where('course_id','=',intval($course))->get();
 		// dd($groups);
-		return view('groups.details',compact('groups','name_course'));
+		return view('groups.details',compact('id','groups','name_course','course'));
 	}
 
 
@@ -278,7 +280,7 @@ class TeacherController extends Controller {
 		}else{
 			$group_selected = Group::find($request->get('group_id'));
 		}
-	
+		// dd($group_selected);
 		// dd($groups);
 		return view('teachers.mystudents',compact('groups','group_selected'));
 	}
@@ -298,15 +300,24 @@ class TeacherController extends Controller {
 
 
 	public function publicate($group_id, $id){
-
-	 //$exam->questions()->attach($question[0], array('percent'=> $question[1], 'order' => $question[2]));
 		$exam = Exam::find($id);
 		$notifications = [];
+
 		if($exam->isOnline() && $exam->isValid() && $exam->stateTerminate()){
 			$group = Group::find($group_id);
-			// dd($group->students);
+
 			foreach ($group->students as $student) {
-				$exam->students()->attach($student->id);
+
+				$evaluation = new Evaluation;
+				$evaluation->exam_id = $id;
+				$evaluation->pending = true;
+				$evaluation->intent  = 1;
+				$evaluation->calification = 0;
+				$evaluation->type = 'final';
+				$evaluation->token_access = $this->obtenToken();
+				$evaluation->save();
+
+				$student->evaluations()->attach($evaluation->id);
 			}
 			$exam->state = 'publicate';
 			$exam->save();
@@ -318,5 +329,36 @@ class TeacherController extends Controller {
 		return Redirect::back()->withErrors($notifications);	
 		
 	}
+
+
+	private function obtenCaracterAleatorio($arreglo) {
+		$clave_aleatoria = array_rand($arreglo, 1);	
+		return $arreglo[ $clave_aleatoria ];	
+	}
+ 
+	private function obtenCaracterMd5($car) {
+		$md5Car = md5($car.Time());	
+		$arrCar = str_split(strtoupper($md5Car));	
+		$carToken = $this->obtenCaracterAleatorio($arrCar);	
+		return $carToken;
+	}
+ 
+	private function obtenToken() {
+		
+		$mayus = "ABCDEFGHIJKMNPQRSTUVWXYZ";
+		$mayusculas = str_split($mayus);	
+		$numeros = range(0,9);
+		shuffle($mayusculas);
+		shuffle($numeros);		
+		$arregloTotal = array_merge($mayusculas,$numeros);
+		$newToken = "";
+		
+		for($i=0;$i<=10;$i++) {
+				$miCar = $this->obtenCaracterAleatorio($arregloTotal);
+				$newToken .= $this->obtenCaracterMd5($miCar);
+		}
+		return $newToken;
+	}
+ 
 
 }

@@ -29,7 +29,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Titulo</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="title" value="">
+									<input type="text" class="form-control" name="title" value="{{ old('title') }}">
 								</div>
 							</div>
 
@@ -46,7 +46,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Descripcion</label>
 								<div class="col-md-9">
-									<textarea type="text" class="form-control" name="description" ></textarea>
+									<textarea type="text" class="form-control" name="description" >{{ old('description') }}</textarea>
 								</div>
 							</div>
 
@@ -56,21 +56,21 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Fecha</label>
 								<div class="col-md-9 ">
-									<input  id="date" type="text" class="form-control" name="date_exam" value="" >
+									<input  id="date" type="text" class="form-control" name="date_exam" value="{{ old('date_exam') }}" >
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label">Hora Inicio</label>
 								<div class="col-md-9 clockpicker">
-									<input type="text" class="form-control" name="time_start" value="" >
+									<input type="text" class="form-control" name="time_start" value="{{ old('time_start') }}" >
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label">Hora Final</label>
 								<div class="col-md-9 clockpicker">
-									<input type="text" class="form-control" name="duration" value="" >
+									<input type="text" class="form-control" name="duration" value="{{ old('duration') }}" >
 								</div>
 							</div>
 
@@ -78,7 +78,14 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Ponderacion de la Nota</label>
 								<div class="col-md-9">
-									<input type="number" class="form-control" name="total" value=""  min="0" max="100">
+									<input type="number" class="form-control" name="total" value="{{ old('total') }}"  min="1" max="100">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label">Nro Intentos</label>
+								<div class="col-md-9">
+									<input type="number" class="form-control" name="intents" value="{{ old('intents') }}"  min="1" max="10">
 								</div>
 							</div>
 							</fieldset>

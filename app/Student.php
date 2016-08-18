@@ -23,8 +23,12 @@ class Student extends Model {
 								->withPivot('anio','semester');
 	}
 
-	public function exams(){
-		return $this->belongsToMany('App\Exam')->withPivot('response_id');
+	// public function exams(){
+	// 	return $this->belongsToMany('App\Exam')->withPivot('pending','intent','calification','token_access','start','end','content');
+	// }
+
+	public function evaluations(){
+		return $this->belongsToMany('App\Evaluation');
 	}
 
 	public function scopeCodsis($query, $cod_sis){
@@ -46,5 +50,9 @@ class Student extends Model {
 			$query->where('user_id','!=',0)->where('cod_sis', "LIKE", "%$cod_sis%");
 
 		}
+	}
+
+	public function isPending(){
+		return $student->exam->pivot->pending == 1;
 	}
 }

@@ -16,21 +16,21 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Materia</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="course" value="{{ $exam->name_course }}">
+									<input type="text" class="form-control" name="course" value="{{ old('course', $exam->name_course ) }}">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label">Institucion</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="institution" value="{{ $exam->institution }}">
+									<input type="text" class="form-control" name="institution" value="{{  old('institution', $exam->institution ) }}">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label">Titulo</label>
 								<div class="col-md-9">
-									<input type="text" class="form-control" name="title" value="{{ $exam->title}}">
+									<input type="text" class="form-control" name="title" value="{{ old('title', $exam->title )}}">
 								</div>
 							</div>
 
@@ -53,7 +53,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Descripcion</label>
 								<div class="col-md-9">
-									<textarea class="form-control" name="description" rows="3">{{ $exam->description }}</textarea>
+									<textarea class="form-control" name="description" rows="3">{{ old('description', $exam->description) }}</textarea>
 								</div>
 							</div>
 
@@ -68,21 +68,21 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Fecha</label>
 								<div class="col-md-9 ">
-									<input  id="date" type="text" class="form-control" name="date_exam" value="{{$exam->getDate()}}" >
+									<input  id="date" type="text" class="form-control" name="date_exam" value="{{ old('date_exam', $exam->getDate())}}" >
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label">Hora Inicio</label>
 								<div class="col-md-9 clockpicker">
-									<input type="text" class="form-control" name="time_start" value="{{$exam->getStartTime()}}" >
+									<input type="text" class="form-control" name="time_start" value="{{ old('time_start', $exam->getStartTime())}}" >
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-2 control-label">Hora Final</label>
 								<div class="col-md-9 clockpicker">
-									<input type="text" class="form-control" name="duration" value="{{$exam->getEndTime()}}" >
+									<input type="text" class="form-control" name="duration" value="{{old('duration', $exam->getEndTime())}}" >
 								</div>
 							</div>
 
@@ -90,7 +90,14 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Ponderacion de la Nota</label>
 								<div class="col-md-9">
-									<input type="number" class="form-control" name="total" min="0" max="100" value="{{ $exam->total }}">
+									<input type="number" class="form-control" name="total" min="1" max="100" value="{{ old('total', $exam->total) }}">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label">Nro Intentos</label>
+								<div class="col-md-9">
+									<input type="number" class="form-control" name="intents" value="{{ old('intents', $exam->intents )}}"  min="1" max="10">
 								</div>
 							</div>
 							</fieldset>

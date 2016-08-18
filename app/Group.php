@@ -24,4 +24,8 @@ class Group extends Model {
 		return $this->hasMany('App\Exam');
 	}
 
+	public function evaluations(){
+		return $this->hasManyThrough('App\Evaluation','App\Exam');
+	}
+
 }
