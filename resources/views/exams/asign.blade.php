@@ -121,7 +121,7 @@
 												</span>
 											</div>
 											<div class="col-sm-3">
-												<input type="number" id="{{$question->question_id}}" class="form-control" value="{{$question->percent}}" min='0' max='100'>
+												<input type="number" id="{{$question->question_id}}" class="form-control" value="{{$question->percent}}" min='1' max='100'>
 												<input type="hidden" name="id_q[]" value="{{$question->question_id}}_{{$question->percent}}">
 											</div>
 										</div>

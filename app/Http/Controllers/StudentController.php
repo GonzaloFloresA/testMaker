@@ -9,6 +9,10 @@ use App\Student;
 use App\Course;
 use App\User;
 use App\Group;
+use App\Evaluation;
+use App\Exam;
+use App\Question;
+use App\ComplementQuestion;
 use Hash;
 use Session;
 use Redirect;
@@ -226,13 +230,176 @@ class StudentController extends Controller {
 
 	public function myexams($id, $group_id){
 		$student = User::find($id)->student;
-		$exams = $student->exams->where('group_id',intval($group_id));
+
+		// dd($student->evaluations);
+		$exams = $student->groups->where('id',intval($group_id))->first()->evaluations->where('type','final');
+		//$exams = $student->exams->where('group_id',intval($group_id));
+		//$exams = $student->evaluations->
 		// dd($exams);
 		// dd($student->exams);
 		$group = Group::find($group_id);
 	
+		// dd($exams);
+		return view('students.myexams',compact('id','exams','group'));
+	}
 
-		return view('students.myexams',compact('exams','group'));
+	public function verifyToken($id, $group_id, $exam_id, $eval_id){
+		return view('exams.verifyToken', compact('id','group_id','exam_id','eval_id'));
+	}
+
+
+	public function startEvaluation(Request $request, $id, $group_id, 
+		$exam_id, 
+		$eval_id){	
+		$student = User::find($id)->student;
+		$evaluation = Evaluation::find(intval($eval_id));
+		$exam = Exam::find(intval($exam_id));
+		$group = Group::find(intval($group_id));
+		$eval = Evaluation::find(intval($eval_id));
+		$eval->start = date("Y-m-d H:i:s");
+		$eval->save();
+		$tokenEval = $evaluation->token_access;
+		$notifications = [];
+		$state = 'eval';
+		if($tokenEval == $request->get('token_eval')){
+			return view('exams.evaluate',compact('exam','group','state','student','eval'));
+		}else{
+			$notifications[] = "El token introducido no es correcto. Vuelva a Intentar";
+			return Redirect::back()->withErrors($notifications);
+		}
+	}
+
+
+	public function terminateEvaluation(Request $request,$id,$group_id,$exam_id,$eval_id){
+		$exam = Exam::find(intval($exam_id));
+		$eval = Evaluation::find(intval($eval_id));
+		$student = User::find($id)->student;
+	 	$ids = $request->get('questions_id');
+	 	$calif = 0;
+	 	$results = [];
+	 	$notifications = [];
+	 	// dd($request);
+	 	foreach ($ids as $key => $value) {
+	 		$response = $request->get('response_'.$value);
+	 		if( $response != null && $this->verifyQuestion($value,$response) ){
+	 			$percent = $exam->questions->where('id',intval($value))->first()->pivot->percent; 
+	 			$calif += $percent;
+
+	 		}else{
+	 			//dd('no existe '.$value);
+	 		}
+
+	 	}
+	 	$eval->calification = $calif;
+	 	$eval->pending = false;
+	 	$eval->end = date("Y-m-d H:i:s");
+	 	
+	 	
+	 	if($calif < 80){
+	 		// el examen se reprobo creamos otro intento
+	 		$intent = $eval->intent + 1;
+	 		if ($intent <= $exam->intents){
+	 			
+	 			$evaluation = new Evaluation;
+				$evaluation->exam_id = $exam->id;
+				$evaluation->pending = true;
+				$evaluation->intent  = $intent;
+				$evaluation->calification = 0;
+				$evaluation->type = 'final';
+				$evaluation->token_access = $eval->token_access;
+				$evaluation->save();
+				$student->evaluations()->attach($evaluation->id);
+				$eval->type = 'partial';
+				$notifications[] = "Lo siento su nota es de $calif inferior a 80.Vuelva a Intentar :( ";
+	 		}else{
+				$notifications[] = "Ha reprobado el examen. Mas cuidado la proxima vez :(";
+	 		}		
+
+	 	}else{
+	 	   Session::flash('flash_message',"Felicidades, has aprobado tu examen :) ");
+	 	}
+	 	$eval->save();
+
+	 	return redirect('student/'.$id.'/group/'.$group_id.'/')->withErrors($notifications);
+
+	 	// dd('la nota total es '.$calif);
+	}
+
+	public function verifyQuestion($id, $response){
+		$question = Question::find(intval($id));
+		if($question->types == 'multiple'){
+			sort($response);
+			$true_response = $question->multipleQuestion->options->filter(function($value){
+					return $value->credible == 1;
+				});
+			$true_response = $true_response->lists('id');
+			sort($true_response);
+			if($response  == $true_response){
+				return true;
+			}else{
+				return false;
+			}
+			
+		}else if($question->types == 'falsoVerdad'){
+			if($question->credible == intval($response)){
+				return true;
+			}else{
+				return false;
+			}
+		}else if($question->types == 'complemento'){
+
+			$isCredible = True;
+			$combine = array_combine($response[0], $response[1]);
+			// dd($combine);
+			foreach($combine as $_id => $response){
+				$complement = ComplementQuestion::find($_id);
+				$arr_solution = json_decode($complement->solution);
+				// convert caracters
+				$string = htmlentities($response, null, 'utf-8');
+				$content = str_replace("&nbsp;", "", $string);
+				$response = html_entity_decode($content);
+				
+				if(!in_array(trim($response), $arr_solution)){
+					$isCredible = false;
+				}				
+			}
+
+			if($isCredible){
+				return true;
+			}else{
+				return false;
+			}
+		}	
+	}
+
+
+	private function obtenCaracterAleatorio($arreglo) {
+		$clave_aleatoria = array_rand($arreglo, 1);	
+		return $arreglo[ $clave_aleatoria ];	
+	}
+ 
+	private function obtenCaracterMd5($car) {
+		$md5Car = md5($car.Time());	
+		$arrCar = str_split(strtoupper($md5Car));	
+		$carToken = $this->obtenCaracterAleatorio($arrCar);	
+		return $carToken;
+	}
+ 
+	private function obtenToken() {
+		
+		$mayus = "ABCDEFGHIJKMNPQRSTUVWXYZ";
+		$mayusculas = str_split($mayus);	
+		$numeros = range(0,9);
+		shuffle($mayusculas);
+		shuffle($numeros);		
+		$arregloTotal = array_merge($mayusculas,$numeros);
+		$newToken = "";
+		
+		for($i=0;$i<=10;$i++) {
+				$miCar = $this->obtenCaracterAleatorio($arregloTotal);
+				$newToken .= $this->obtenCaracterMd5($miCar);
+		}
+		return $newToken;
 	}
 
 

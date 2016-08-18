@@ -16,19 +16,28 @@
 							<span id="institution" class="pull-left"><strong>{{$exam->institution }}</strong></span>
 							<span id="course" class="pull-right"><strong>{{ $exam->name_course }}</strong></span>
 							<div id="title" class="text-center"><h3>{{$exam->title}}</h3></div>
+							@if($state == 'eval')
+								<div class="personal">			
+								<p id="name"><strong>Nombre:</strong> <i> {{ $student->user->name }} </i></p>
+								<p id="cod_sis"><strong>Codigo Sis:</strong> <i>{{$student->cod_sis}}</i> </p>						
+								<p id="date"><strong>Fecha:</strong>  <i>{{ date('Y-m-d')}}</i></p>
+								<p id="group"><strong>Grupo:</strong> <i>{{$group->nro}}</i></p>
+								</div>
+							@else
+								<div class="personal">			
+								<p id="name"><strong>Nombre:</strong> <i>NOMBRE DEL ESTUDIANTE </i></p>
+								<p id="cod_sis"><strong>Codigo Sis:</strong> <i>CODIGO SIS DEL ESTUDIANTE</i> </p>						
+								<p id="date"><strong>Fecha:</strong>  <i>FECHA</i></p>
+								<p id="group"><strong>Grupo:</strong> <i>GRUPO</i></p>
+								</div>
+							@endif	
 							
-							<div class="personal">			
-							<p id="name"><strong>Nombre:</strong> <i>NOMBRE DEL ESTUDIANTE </i></p>
-							<p id="cod_sis"><strong>Codigo Sis:</strong> <i>CODIGO SIS DEL ESTUDIANTE</i> </p>						
-							<p id="date"><strong>Fecha:</strong>  <i>FECHA</i></p>
-							<p id="group"><strong>Grupo:</strong> <i>GRUPO</i></p>
-							</div>
 						</div>
 					</div>
 					</div>
 					<div class="row">
 						<div class="col-md-10 col-md-offset-1">
-							
+							<form action="{{ url('student/'.$student->user->id.'/group/'.$group->id.'/exam/'.$exam->id.'/eval/'.$eval->id.'/terminate') }}" method="POST" class="sub-eval">
 							@foreach($exam->questionOrdered() as $question)
 								@if($question->isMultiple())
 									<div class="row">
@@ -55,6 +64,11 @@
 											</ul>
 											</div>
 
+											<!-- @if($state == 'eval')
+												<div class="form-group pull-right">
+												<button class= "btn btn-primary" type="submit">Responder</button>
+											</div>
+											@endif -->
 
 										
 										
@@ -77,10 +91,15 @@
 												
 												<input type="hidden" name="questions_id[]" value="{{ $question->id }}">
 													<div class="input-group">
-													<input type="radio" name="credible" value="1" > Verdad
-								    			<input type="radio" name="credible" value="0" > Falso
+													<input type="radio" name="response_{{ $question->id }}" value="1" > Verdad
+								    			<input type="radio" name="response_{{ $question->id }}" value="0" > Falso
 								    			</div>
-								    			
+								    			<!-- @if($state == 'eval')
+												<div class="form-group pull-right">
+												<button class= "btn btn-primary" type="submit">Responder</button>
+											</div>
+											@endif -->
+												
 											</div>
 										</div>
 									</div>
@@ -92,11 +111,15 @@
 												<div class="description">
 													<strong>{{$question->pivot->order}}.- </strong>
 													<p>
-														{!! $question->showVersion() !!}
+														{!! $question->evalVersion() !!}
 														<strong>( {{ $question->pivot->percent }} pts.)</strong>
 													</p>
 												</div>
-											
+												<!-- @if($state == 'eval')
+												<div class="form-group pull-right">
+												<button class= "btn btn-primary " type="submit">Responder</button>
+												</div>
+												@endif -->
 										
 										</div>
 									</div>
@@ -124,19 +147,23 @@
 									</div>
 								@endif
 								
-							@endforeach		
-						</div>
-					</div>
-					<div class="row">
+							@endforeach	
+							<div class="row">
 						<p></p>
 						<div class="col-md-12">
 							<div class="form-group text-center">
 				
-									<a class= "btn btn-primary" href="{{ URL::previous() }}">Salir Vista</a>
-												
+									<!-- <a class= "btn btn-primary" href="{{ URL::previous() }}">Salir Vista</a> -->
+									<button class= "btn btn-primary" type="submit">Responder</button>				
 							</div>
 						</div>
 					</div>
+							</form>	
+
+						</div>
+					</div>
+					
+
 				</div>
 			</div>
 		</div>
@@ -153,6 +180,15 @@
 	// 	ajaxPost('')
 	// });
 
+	$('body').on('blur','span.span_editable',function(){
+	var id = $(this).attr('id');
+	var text = $(this).html();
+	text = text.replace(/&nbsp;/gi,'');
+	text = text.replace(/\s/gi,'');
+	// alert(id);
+	$('#_'+id).val(text);
+	// $('#cont').val('gato');
+	});	
 
 
 

@@ -457,6 +457,8 @@ class QuestionController extends Controller {
 		}	
 	}
 
+	
+
 
 	public function delete($group_id, $id){
 		$group = Group::find($group_id);
@@ -497,6 +499,10 @@ class QuestionController extends Controller {
 		
 		Session::flash('flash_message',"La eliminacion se ha completado..");
 		return redirect('teacher/group/'.$group.'/questions');
+	}
+
+	public function evaluateQuestion(){
+
 	}
 
 }

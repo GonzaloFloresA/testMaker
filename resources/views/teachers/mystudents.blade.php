@@ -13,7 +13,10 @@
 					
 					<div class="row">
 						<div class="col-md-7">
-							Lista de Estudiantes del grupo <strong>{{$group_selected->nro}}</strong> de la materia de <strong>{{$group_selected->course->name }}.</strong>
+
+							@if($group_selected != null)
+								Lista de Estudiantes del grupo <strong>{{$group_selected->nro}}</strong> de la materia de <strong>{{$group_selected->course->name }}.</strong>
+							@endif
 						</div>
 	
 						<div class="col-md-4" >
@@ -22,6 +25,7 @@
 								<div class="form-group">
 									<select class="form-control" name="group_id">
 										<option disabled selected>Escoja un grupo</option>
+
 										@foreach($groups as $group)
 											<option value="{{$group->id}}">{{$group->course->name}} G{{$group->nro}}</option>
 										@endforeach
@@ -61,6 +65,7 @@
             <tbody>
             	<form action="" method="post" id="form-email">
             		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+            		@if($group_selected != null)
             		@foreach($group_selected->students->sortByDesc('user_id') as $student)
 
             			@if($student->user_id == 0)
@@ -100,6 +105,7 @@
 									</tr>
 									@endif
             		@endforeach
+            		@endif
             	</form>
             </tbody>
          	</table>

@@ -439,4 +439,17 @@ class GroupController extends Controller {
 		return view('groups.excel');
 	}
 
+	public function editDescription($group_id){
+		$group = Group::find(intval($group_id));
+		return view('groups.description',compact('group'));
+	}
+
+	public function updateDescription(Request $request, $group_id){
+		$group = Group::find(intval($group_id));
+		$group->description = $request->get('description');
+		$group->save();
+		Session::flash('flash_message',"Se ha actualizado la descripcion del curso!");
+		return Redirect::back();
+	}
+
 }

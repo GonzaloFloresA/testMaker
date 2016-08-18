@@ -80,7 +80,8 @@ class ExamController extends Controller {
 			'date_exam' =>'required|date_format:Y-m-d|after:tomorrow',
 			'time_start' => 'required|date_format:"H:i"|before:duration',
 			'duration' => 'required|date_format:"H:i"|after:time_start',
-			'total' => 'required|min:0|max:100',
+			'total' => 'required|min:1|max:100',
+			'intents' => 'required|min:1|max:10',
 			);
 
 		}
@@ -104,6 +105,7 @@ class ExamController extends Controller {
 			$date_end = new DateTime($date_exam." ".$end);
 			$exam->time_start = $date_start->format('Y-m-d H:i:s');
 			$exam->duration = $date_end->format('Y-m-d H:i:s');
+			$exam->intents = $request->get('intents');
 		}else{
 			$exam->time_start = "";
 			$exam->duration ="";
@@ -126,8 +128,8 @@ class ExamController extends Controller {
 	public function show($group, $id)
 	{
 		$exam = Exam::find($id);
-
-		return view('exams.show',compact('exam','group'));
+		$state = "show";
+		return view('exams.show',compact('exam','group','state'));
 	}
 
 	/**
@@ -193,7 +195,8 @@ class ExamController extends Controller {
 			'date_exam' =>'required|date_format:Y-m-d|after:tomorrow',
 			'time_start' => 'required|date_format:"H:i"|before:duration',
 			'duration' => 'required|date_format:"H:i"|after:time_start',
-			'total' => 'required|min:0|max:100',
+			'total' => 'required|min:1|max:100',
+			'intents' => 'required|min:1|max:10',
 			);
 		}
 		
@@ -214,6 +217,7 @@ class ExamController extends Controller {
 			$date_end = new DateTime($date_exam." ".$end);
 			$exam->time_start = $date_start->format('Y-m-d H:i:s');
 			$exam->duration = $date_end->format('Y-m-d H:i:s');
+			$exam->intents = $request->get('intents');
 		}else{
 			$exam->time_start = "";
 			$exam->duration ="";
@@ -254,8 +258,18 @@ class ExamController extends Controller {
 
 
 	public function asign($group,$id){
-		$questions = Question::where('group_id','=',intval($group))->get();
+
+		
 		$exam = Exam::find($id);
+		if($exam->types == 'online'){
+			$all = Question::where('group_id','=',intval($group))->get();
+			$questions = $all->filter(function($question){
+				return !$question->isDevelop();
+			}); 
+		
+		}else{
+			$questions = Question::where('group_id','=',intval($group))->get();	
+		}
 		$questionsExam = Question::join('exam_question','questions.id','=','exam_question.question_id')
 								->where('exam_question.exam_id','=',$id)->orderBy('exam_question.order','asc')->get();
 		// dd($questionsExam);
@@ -353,6 +367,12 @@ class ExamController extends Controller {
 		return $questions;
 	}
 
+	public function terminate($group_id, $id){
+		$group = Group::find($group_id);
+		$exam = Exam::find($id);
+		return view('exams.terminate',compact('group','exam'));
+	}
+
 	public function terminateEdition($group,$id){
 		$exam = Exam::find($id);
 		$notifications = [];
@@ -365,8 +385,10 @@ class ExamController extends Controller {
 			$notifications[] = "El examen no esta en estado de edicion o el puntaje del mismo no es 100";
 			return Redirect::back()->withErrors($notifications);
 		}
-		dd('terminando edicion');
+		
 	}
+
+
 
 
 }

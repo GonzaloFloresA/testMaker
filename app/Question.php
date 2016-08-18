@@ -47,15 +47,39 @@ class Question extends Model {
 		return $result;
 	}
 
+	public function evalVersion(){
+		$result = "";
+
+		if($this->types == 'complemento'){
+			$regexp =  '/<compl>compl-(.+?)<\/compl>/i';
+		    preg_match_all($regexp, $this->description,$matches);
+		    $cont = $this->getTagsEval($matches[1]);
+		    $result = str_replace($matches[0],$cont,$this->description);
+			// dd($result);
+		}
+		return $result;
+	}
+
 	public function getTags($ids){
 		$res = array();
 		foreach ($ids as $key => $value) {
 			//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			$res[] = '<span contenteditable class="span_editable" id="'.$value.'" style="display:inline-block;"></span><input type="hidden" name="id[]" value="'.$value.'">
+			$res[] = '<span contenteditable class="span_editable" id="'.$value.'" style="display:inline-block;"></span><input  type="hidden" name="id[]" value="'.$value.'">
 				     <input type="hidden"  id="_'.$value.'"  name="cont[]" >';
 		}
 		return $res;
 	}
+
+	public function getTagsEval($ids){
+		$res = array();
+		foreach ($ids as $key => $value) {
+			//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			$res[] = '<span contenteditable class="span_editable" id="'.$value.'" style="display:inline-block;"></span><input  id="'.$this->id.'" type="hidden" name="response_'.$this->id.'[0][]" value="'.$value.'">
+				     <input type="hidden"  id="_'.$value.'"  name="response_'.$this->id.'[1][]" >';
+		}
+		return $res;
+	}
+
 
 	public function isMultiple(){
 		if($this->types == 'multiple')

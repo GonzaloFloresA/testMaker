@@ -7,7 +7,7 @@ class Exam extends Model {
 
 	protected $table = 'exams';
 
-	protected $fillable = ['group_id','name_course','institution','duration','type','title','description','total','time_start','types','state'];
+	protected $fillable = ['group_id','name_course','institution','duration','type','title','description','total','time_start','types','state','intents'];
 
 	public function group(){
 		return $this->belongsTo('App\Group');
@@ -17,8 +17,12 @@ class Exam extends Model {
 		return $this->belongsToMany('App\Question')->withPivot('percent','order');
 	}
 
-	public function students(){
-		return $this->belongsToMany('App\Student');
+	// public function students(){
+	// 	return $this->belongsToMany('App\Student');
+	// }
+
+	public function evaluations(){
+		return $this->hasMany('App\Evaluation');
 	}
 
     // verify sum percent all notes is 100

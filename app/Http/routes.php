@@ -113,7 +113,8 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 
 		Route::get('group/{group}/exam/edit/{id}/asign','ExamController@asign');
 		Route::post('group/{group}/exam/edit/{id}/asign','ExamController@populate');
-		Route::get('group/{group}/exam/{id}/terminate','ExamController@terminateEdition');
+		Route::get('group/{group}/exam/{id}/terminate','ExamController@terminate');
+		Route::post('group/{group}/exam/{id}/terminate','ExamController@terminateEdition');
 
 		Route::get('group/{group}/exam/{id}/show','ExamController@show');
 		Route::get('group/{group}/exam/{id}/publicate', 'TeacherController@publicate');
@@ -132,12 +133,18 @@ Route::group(['middleware'=>['auth','activate','teacher'], 'prefix' => 'teacher'
 
 		Route::get('/exam/{id}/pdf', 'PdfController@invoice');
 
+		Route::get('/group/{group}/description', 'GroupController@editDescription');
+		Route::post('/group/{group}/description', 'GroupController@updateDescription');
+
 });
 
 // rutas permitidas para el usuario tipo estudiante (student)
 Route::group(['middleware'=>['auth','student'], 'prefix' => 'student'], function(){
 		Route::get('/', 'WelcomeController@index');
 		Route::get('/{id}/course', 'StudentController@mycourses');
-		Route::get('/{id}/group/{group}','StudentController@myexams');
+		Route::get('/{id}/group/{group}/','StudentController@myexams');
+		Route::get('/{id}/group/{group}/exam/{exam}/eval/{eval}','StudentController@verifyToken');
+		Route::post('/{id}/group/{group}/exam/{exam}/eval/{eval}','StudentController@startEvaluation');
+		Route::post('/{id}/group/{group}/exam/{exam}/eval/{eval}/terminate','StudentController@terminateEvaluation');
 
 });

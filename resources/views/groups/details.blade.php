@@ -17,7 +17,9 @@
                  <div class="col-md-3 col-sm-6 ">
                     <div class="team-member wow fadeInUp animated group" data-wow-duration="400ms" data-wow-delay="300ms" style="visibility: visible; animation-duration: 400ms; animation-delay: 300ms; animation-name: fadeInUp;">
                         <div class="team-img">
-                            <img class="img-responsive" src="{{ URL::asset('images/libro-icono.png')}}" alt="" width="150px"> 
+                        	<a href="{{url('teacher/group/'.$group->id.'/description')}}">
+                            <img class="img-responsive" src="{{ URL::asset('images/libro-icono.png')}}" alt="" width="150px">
+                            </a> 
                         </div>
                         <div class="team-info">
                             <p></p>
