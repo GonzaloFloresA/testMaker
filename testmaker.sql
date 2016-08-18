@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-08-2016 a las 10:12:28
+-- Tiempo de generación: 18-08-2016 a las 13:07:30
 -- Versión del servidor: 10.1.9-MariaDB
 -- Versión de PHP: 5.6.15
 
@@ -64,10 +64,12 @@ CREATE TABLE `complementquestions` (
 --
 
 INSERT INTO `complementquestions` (`id`, `question_id`, `solution`, `created_at`, `updated_at`) VALUES
-(2, 26, '["uno","dos","tres"]', '2016-08-05 13:09:20', '2016-08-05 13:09:20'),
-(4, 26, '["cuatro","cinco","seis"]', '2016-08-05 14:01:33', '2016-08-05 14:01:33'),
-(20, 26, '["cascajo","lima","agua"]', '2016-08-06 05:26:25', '2016-08-06 05:29:02'),
-(25, 26, '["fsdfsdf","sfsdfs","fsdfsdf"]', '2016-08-06 06:40:18', '2016-08-06 06:40:18');
+(2, 26, '["uno","one","eins"]', '2016-08-05 13:09:20', '2016-08-05 13:09:20'),
+(4, 26, '["dos","two","zwei"]', '2016-08-05 14:01:33', '2016-08-05 14:01:33'),
+(20, 26, '["tres","three","drei"]', '2016-08-06 05:26:25', '2016-08-06 05:29:02'),
+(25, 26, '["cuatro","four","vier"]', '2016-08-06 06:40:18', '2016-08-06 06:40:18'),
+(26, 31, '["uno","dos","tres"]', '2016-08-11 19:43:07', '2016-08-11 19:43:07'),
+(27, 31, '["cuatro","cinco"]', '2016-08-11 19:43:07', '2016-08-11 19:43:07');
 
 -- --------------------------------------------------------
 
@@ -107,7 +109,77 @@ INSERT INTO `courses` (`id`, `cod_sis`, `name`, `level`, `created_at`, `updated_
 (18, 20112223, 'Quimica', 1, '2016-06-22 07:40:51', '2016-06-22 07:40:51', '1'),
 (19, 2011233, 'Ecuaciones Diferenciales', 3, '2016-06-22 07:40:51', '2016-06-22 07:40:51', '3'),
 (20, 20112233, 'Estadistica I', 3, '2016-06-28 21:41:26', '2016-06-28 21:41:26', '3'),
-(21, 2011011, 'ingenieria economica', 5, '2016-08-10 02:29:37', '2016-08-10 02:29:37', '3');
+(21, 2011011, 'ingenieria economica', 5, '2016-08-10 02:29:37', '2016-08-10 02:29:37', '3'),
+(22, 2010101, 'civismo', 8, '2016-08-11 19:35:45', '2016-08-11 19:35:45', '2');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `evaluations`
+--
+
+CREATE TABLE `evaluations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `exam_id` int(11) NOT NULL,
+  `pending` tinyint(1) NOT NULL,
+  `intent` int(11) NOT NULL,
+  `calification` int(11) NOT NULL,
+  `token_access` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `content` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `type` enum('partial','final') COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `evaluations`
+--
+
+INSERT INTO `evaluations` (`id`, `exam_id`, `pending`, `intent`, `calification`, `token_access`, `start`, `end`, `content`, `type`, `created_at`, `updated_at`) VALUES
+(1, 6, 1, 1, 0, '12345', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'final', '2016-08-17 21:44:26', '2016-08-17 21:44:26'),
+(2, 6, 0, 1, 0, '12345', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'final', '2016-08-17 21:44:42', '2016-08-17 21:44:42'),
+(3, 5, 0, 1, 0, '12345', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'partial', '2016-08-17 21:44:53', '2016-08-17 21:44:53'),
+(4, 4, 1, 1, 0, '12345', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'partial', '2016-08-17 21:45:33', '2016-08-17 21:45:33'),
+(5, 3, 1, 1, 0, '12345', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'partial', '2016-08-17 21:45:39', '2016-08-17 21:45:39'),
+(6, 17, 0, 1, 20, '34151009D94', '2016-08-18 09:22:12', '2016-08-18 09:22:19', '', 'partial', '2016-08-18 07:17:44', '2016-08-18 13:22:19'),
+(18, 17, 0, 2, 80, '34151009D94', '2016-08-18 09:22:43', '2016-08-18 09:23:06', '', 'final', '2016-08-18 13:22:19', '2016-08-18 13:23:06');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `evaluation_student`
+--
+
+CREATE TABLE `evaluation_student` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `evaluation_id` int(10) UNSIGNED NOT NULL,
+  `student_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `evaluation_student`
+--
+
+INSERT INTO `evaluation_student` (`id`, `evaluation_id`, `student_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 2, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 6, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 7, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 8, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 9, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 10, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 11, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(9, 12, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(10, 13, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(11, 14, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(12, 15, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(13, 16, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(14, 17, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(15, 18, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -128,6 +200,7 @@ CREATE TABLE `exams` (
   `total` int(11) NOT NULL DEFAULT '100',
   `state` enum('edition','terminate','publicate') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'edition',
   `types` enum('online','presential') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'presential',
+  `intents` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -136,13 +209,16 @@ CREATE TABLE `exams` (
 -- Volcado de datos para la tabla `exams`
 --
 
-INSERT INTO `exams` (`id`, `group_id`, `name_course`, `institution`, `duration`, `time_start`, `type`, `title`, `description`, `total`, `state`, `types`, `created_at`, `updated_at`) VALUES
-(1, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-11 02:30:00', '2016-08-11 17:25:00', 'Examen de Repaso', 'Examen de Repaso', 'Descripción del examen de la tierra de dos estados', 100, 'terminate', 'presential', '2016-07-22 15:55:45', '2016-08-03 21:50:35'),
-(3, 9, 'Programación Funcional ', 'Ingeniería Informática', '2016-08-12 17:25:00', '2016-08-12 16:20:00', ' Examen parcial', ' Examen parcial', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse saepe ad praesentium, iusto, corporis alias temporibus laborum. Eligendi praesentium nemo perferendis, autem, inventore ipsa nobis sit error eos, tenetur, rem!', 44, 'publicate', 'online', '2016-07-22 17:55:52', '2016-08-11 11:58:09'),
-(4, 9, 'Programacion Funcional', 'Ingenieria Informatica', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Examen de Repaso', 'Examen de Repaso', 'uno dos tres cuatro cinco seis siete', 100, 'edition', 'presential', '2016-07-22 19:15:19', '2016-08-11 10:48:22'),
-(5, 22, 'Programacion Web', 'Ingenieria Informatica', '2016-08-11 01:30:00', '2016-08-11 17:25:00', 'Examen Repaso', 'Examen Repaso', 'Examen para verificar el estado de conocimientos del alumno.', 100, 'publicate', 'online', '2016-07-31 08:02:53', '2016-07-31 08:02:53'),
-(6, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-11 03:30:00', '2016-08-11 17:25:00', 'Examen de Mesa', 'Examen de Mesa', 'Examen para alumnos que desean rendir un examen extraordinario fsdfsdfdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.', 100, 'terminate', 'online', '2016-08-01 06:51:11', '2016-08-07 08:13:21'),
-(12, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-20 18:30:00', '2016-08-20 05:24:00', '', 'dfsdfsdf fsdf sdfsdf', 'sdfdf dfsdf sdfsdfsdf sdfsfd', 44, 'edition', 'online', '2016-08-11 09:34:06', '2016-08-11 10:49:52');
+INSERT INTO `exams` (`id`, `group_id`, `name_course`, `institution`, `duration`, `time_start`, `type`, `title`, `description`, `total`, `state`, `types`, `intents`, `created_at`, `updated_at`) VALUES
+(1, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-11 02:30:00', '2016-08-11 17:25:00', 'Examen de Repaso', 'Examen de Repaso', 'Descripción del examen de la tierra de dos estados', 100, 'terminate', 'presential', 0, '2016-07-22 15:55:45', '2016-08-03 21:50:35'),
+(3, 9, 'Programación Funcional ', 'Ingeniería Informática', '2016-08-12 17:25:00', '2016-08-12 16:20:00', ' Examen parcial', ' Examen parcial', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse saepe ad praesentium, iusto, corporis alias temporibus laborum. Eligendi praesentium nemo perferendis, autem, inventore ipsa nobis sit error eos, tenetur, rem!', 44, 'publicate', 'online', 1, '2016-07-22 17:55:52', '2016-08-11 11:58:09'),
+(5, 22, 'Programacion Web', 'Ingenieria Informatica', '2016-08-11 01:30:00', '2016-08-11 17:25:00', 'Examen Repaso', 'Examen Repaso', 'Examen para verificar el estado de conocimientos del alumno.', 100, 'publicate', 'online', 1, '2016-07-31 08:02:53', '2016-07-31 08:02:53'),
+(6, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-11 03:30:00', '2016-08-11 17:25:00', 'Examen de Mesa', 'Examen de Mesa', 'Examen para alumnos que desean rendir un examen extraordinario fsdfsdfdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.', 100, 'terminate', 'online', 1, '2016-08-01 06:51:11', '2016-08-07 08:13:21'),
+(12, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-20 18:30:00', '2016-08-20 05:24:00', '', 'examen de segunda opcion', 'sdfdf dfsdf sdfsdfsdf sdfsfd', 44, 'edition', 'online', 1, '2016-08-11 09:34:06', '2016-08-12 06:35:04'),
+(13, 25, 'civismo', 'Ingenieria Informatica', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 'examen final', 'sdfsdfd sdfsdfsdf sdfsdfsdfsd', 0, 'terminate', 'presential', 0, '2016-08-11 19:47:38', '2016-08-11 19:57:28'),
+(14, 25, 'civismo', 'Ingenieria Informatica', '2016-08-16 06:25:00', '2016-08-16 04:20:00', '', 'parcial ', 'dsdfsdf dfsdfsdfsdf', 70, 'edition', 'online', 0, '2016-08-11 19:57:11', '2016-08-11 19:57:11'),
+(16, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-13 17:25:00', '2016-08-13 16:20:00', '', 'Examen de Nivelacion', 'sdfsdf  sdfsdfsdf dsfdfsdf', 50, 'edition', 'online', 3, '2016-08-12 08:25:59', '2016-08-12 08:41:19'),
+(17, 9, 'Programacion Funcional', 'Ingenieria Informatica', '2016-08-19 18:15:00', '2016-08-19 16:15:00', '', 'Examen general', 'Resuelva el examen de forma que obtenga al menos un puntaje de 80 puntos.', 70, 'publicate', 'online', 3, '2016-08-18 05:10:15', '2016-08-18 07:17:44');
 
 -- --------------------------------------------------------
 
@@ -164,11 +240,6 @@ CREATE TABLE `exam_question` (
 
 INSERT INTO `exam_question` (`id`, `exam_id`, `question_id`, `percent`, `order`) VALUES
 (10, 3, 15, 11, 1),
-(13, 4, 9, 14, 5),
-(20, 4, 5, 14, 3),
-(21, 4, 4, 14, 6),
-(22, 4, 14, 16, 7),
-(23, 4, 17, 14, 4),
 (31, 3, 4, 11, 8),
 (36, 3, 5, 11, 3),
 (49, 3, 17, 12, 9),
@@ -183,9 +254,18 @@ INSERT INTO `exam_question` (`id`, `exam_id`, `question_id`, `percent`, `order`)
 (79, 3, 12, 11, 6),
 (80, 3, 16, 11, 5),
 (81, 3, 9, 11, 4),
-(82, 4, 28, 14, 1),
-(83, 4, 26, 14, 2),
-(84, 4, 29, 16, 6);
+(85, 13, 30, 0, 1),
+(86, 13, 32, 100, 2),
+(87, 13, 31, 0, 3),
+(88, 12, 5, 25, 2),
+(89, 12, 4, 25, 1),
+(90, 12, 11, 25, 3),
+(91, 12, 9, 25, 4),
+(92, 17, 3, 20, 5),
+(93, 17, 18, 20, 3),
+(94, 17, 17, 30, 1),
+(95, 17, 26, 10, 4),
+(96, 17, 28, 20, 2);
 
 -- --------------------------------------------------------
 
@@ -195,6 +275,13 @@ INSERT INTO `exam_question` (`id`, `exam_id`, `question_id`, `percent`, `order`)
 
 CREATE TABLE `exam_student` (
   `id` int(10) UNSIGNED NOT NULL,
+  `pending` tinyint(1) NOT NULL,
+  `intent` int(11) NOT NULL,
+  `calification` int(11) NOT NULL,
+  `token_access` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `start` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `end` datetime NOT NULL,
+  `content` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `exam_id` int(10) UNSIGNED NOT NULL,
   `student_id` int(10) UNSIGNED NOT NULL,
   `response_id` int(10) UNSIGNED NOT NULL,
@@ -206,8 +293,8 @@ CREATE TABLE `exam_student` (
 -- Volcado de datos para la tabla `exam_student`
 --
 
-INSERT INTO `exam_student` (`id`, `exam_id`, `student_id`, `response_id`, `created_at`, `updated_at`) VALUES
-(4, 3, 11, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `exam_student` (`id`, `pending`, `intent`, `calification`, `token_access`, `start`, `end`, `content`, `exam_id`, `student_id`, `response_id`, `created_at`, `updated_at`) VALUES
+(4, 0, 0, 0, '', '2016-08-15 00:00:00', '2016-08-15 00:00:00', '', 3, 11, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -220,6 +307,7 @@ CREATE TABLE `groups` (
   `course_id` int(10) UNSIGNED NOT NULL,
   `teacher_id` int(10) UNSIGNED NOT NULL,
   `nro` int(10) UNSIGNED NOT NULL,
+  `description` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `year` int(10) UNSIGNED NOT NULL,
@@ -230,27 +318,30 @@ CREATE TABLE `groups` (
 -- Volcado de datos para la tabla `groups`
 --
 
-INSERT INTO `groups` (`id`, `course_id`, `teacher_id`, `nro`, `created_at`, `updated_at`, `year`, `semester`) VALUES
-(1, 5, 2, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
-(2, 5, 4, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
-(3, 4, 4, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
-(4, 3, 2, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
-(5, 2, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
-(6, 2, 1, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
-(7, 15, 2, 1, '2016-06-27 13:24:28', '2016-06-27 13:24:28', 0, '1'),
-(9, 14, 1, 1, '2016-06-27 13:28:16', '2016-06-27 13:28:16', 0, '1'),
-(11, 19, 2, 1, '2016-06-27 18:21:38', '2016-06-27 18:21:38', 0, '1'),
-(12, 11, 8, 1, '2016-06-27 20:02:47', '2016-06-27 20:02:47', 0, '1'),
-(14, 12, 8, 1, '2016-06-28 07:59:26', '2016-06-28 07:59:26', 0, '1'),
-(15, 12, 2, 2, '2016-06-28 07:59:41', '2016-06-28 07:59:41', 0, '1'),
-(16, 12, 4, 3, '2016-06-28 18:34:25', '2016-06-28 18:34:25', 0, '1'),
-(17, 20, 11, 1, '2016-06-28 21:41:58', '2016-06-28 21:41:58', 0, '1'),
-(18, 17, 11, 1, '2016-06-28 21:42:18', '2016-06-28 21:42:18', 0, '1'),
-(19, 9, 2, 1, '2016-07-19 17:20:58', '2016-07-19 17:20:58', 0, '1'),
-(20, 19, 2, 2, '2016-07-19 17:20:58', '2016-07-19 17:20:58', 0, '1'),
-(21, 5, 1, 3, '2016-07-21 06:52:06', '2016-07-21 06:52:06', 0, '1'),
-(22, 7, 2, 1, '2016-07-31 07:52:58', '2016-07-31 07:52:58', 0, '1'),
-(23, 7, 2, 2, '2016-07-31 07:57:47', '2016-07-31 07:57:47', 0, '1');
+INSERT INTO `groups` (`id`, `course_id`, `teacher_id`, `nro`, `description`, `created_at`, `updated_at`, `year`, `semester`) VALUES
+(1, 5, 2, 1, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
+(2, 5, 4, 2, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
+(3, 4, 4, 1, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
+(4, 3, 2, 1, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
+(5, 2, 1, 1, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
+(6, 2, 1, 2, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2016, '1'),
+(7, 15, 2, 1, '', '2016-06-27 13:24:28', '2016-06-27 13:24:28', 0, '1'),
+(9, 14, 1, 1, '<p>&nbsp;Las evaluaciones de la materia cosiste de:</p>\r\n<ul>\r\n<li>Primer Parcial: 30 pts.</li>\r\n<li>Segundo Parcial:30pts.</li>\r\n<li>Practicas: 40 pts</li>\r\n</ul>\r\n<p>Las fechas son la siguientes:&nbsp;</p>', '2016-06-27 13:28:16', '2016-08-18 14:29:46', 0, '1'),
+(11, 19, 2, 1, '', '2016-06-27 18:21:38', '2016-06-27 18:21:38', 0, '1'),
+(12, 11, 8, 1, '', '2016-06-27 20:02:47', '2016-06-27 20:02:47', 0, '1'),
+(14, 12, 8, 1, '', '2016-06-28 07:59:26', '2016-06-28 07:59:26', 0, '1'),
+(15, 12, 2, 2, '', '2016-06-28 07:59:41', '2016-06-28 07:59:41', 0, '1'),
+(16, 12, 4, 3, '', '2016-06-28 18:34:25', '2016-06-28 18:34:25', 0, '1'),
+(17, 20, 11, 1, '', '2016-06-28 21:41:58', '2016-06-28 21:41:58', 0, '1'),
+(18, 17, 11, 1, '', '2016-06-28 21:42:18', '2016-06-28 21:42:18', 0, '1'),
+(19, 9, 2, 1, '', '2016-07-19 17:20:58', '2016-07-19 17:20:58', 0, '1'),
+(20, 19, 2, 2, '', '2016-07-19 17:20:58', '2016-07-19 17:20:58', 0, '1'),
+(21, 5, 1, 3, '', '2016-07-21 06:52:06', '2016-07-21 06:52:06', 0, '1'),
+(22, 7, 2, 1, '', '2016-07-31 07:52:58', '2016-07-31 07:52:58', 0, '1'),
+(23, 7, 2, 2, '', '2016-07-31 07:57:47', '2016-07-31 07:57:47', 0, '1'),
+(24, 6, 19, 1, '', '2016-08-11 19:34:17', '2016-08-11 19:34:17', 0, '1'),
+(25, 22, 19, 1, '', '2016-08-11 19:36:17', '2016-08-11 19:36:17', 0, '1'),
+(26, 22, 4, 2, '', '2016-08-11 19:36:31', '2016-08-11 19:36:31', 0, '1');
 
 -- --------------------------------------------------------
 
@@ -284,7 +375,13 @@ INSERT INTO `group_student` (`id`, `group_id`, `student_id`, `anio`, `semester`,
 (13, 2, 17, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (14, 2, 18, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (15, 5, 5, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(16, 9, 11, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(16, 9, 11, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(17, 2, 4, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(18, 25, 5, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, 25, 6, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(20, 25, 16, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(21, 25, 18, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(22, 25, 3, 2016, '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -331,7 +428,13 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 ('2016_08_04_233756_alter_questions_table', 22),
 ('2016_08_05_002420_create_ComplementQuestion_table', 23),
 ('2016_08_09_001153_create_exam_student_table', 24),
-('2016_08_10_061442_alter_exams_table', 25);
+('2016_08_10_061442_alter_exams_table', 25),
+('2016_08_12_022712_alter_exam_table', 26),
+('2016_08_15_043141_alter_exam_student_table', 27),
+('2016_08_16_044110_create_table_evaluation', 28),
+('2016_08_17_101635_create_evaluation_student_table', 29),
+('2016_08_18_082815_alter_evaluations_table', 30),
+('2016_08_18_095822_alter_groups_table', 31);
 
 -- --------------------------------------------------------
 
@@ -366,7 +469,8 @@ INSERT INTO `multiplequestions` (`id`, `question_id`, `solution`, `desc_solution
 (13, 17, NULL, NULL, '2016-07-26 06:38:41', '2016-07-26 06:38:41'),
 (14, 18, NULL, NULL, '2016-07-26 06:38:41', '2016-07-26 06:38:41'),
 (15, 19, NULL, NULL, '2016-07-26 06:38:41', '2016-07-26 06:38:41'),
-(16, 21, NULL, NULL, '2016-07-31 07:59:30', '2016-07-31 07:59:30');
+(16, 21, NULL, NULL, '2016-07-31 07:59:30', '2016-07-31 07:59:30'),
+(17, 29, NULL, NULL, '2016-08-11 19:37:54', '2016-08-11 19:37:54');
 
 -- --------------------------------------------------------
 
@@ -393,7 +497,7 @@ INSERT INTO `options` (`id`, `multiple_question_id`, `description`, `credible`, 
 (3, 1, 'sdfsdfsdf', 0, '2016-07-20 18:33:12', '2016-07-20 18:38:02'),
 (4, 1, 'adfadf', 0, '2016-07-20 18:36:18', '2016-07-20 18:37:57'),
 (5, 1, 'dsdfsdf', 0, '2016-07-20 18:37:21', '2016-07-20 18:37:52'),
-(15, 3, 'sfdsfsdf', 0, '2016-07-20 20:10:52', '2016-07-20 20:10:52'),
+(15, 3, 'sfdsfsdf', 1, '2016-07-20 20:10:52', '2016-07-20 20:10:52'),
 (18, 3, 'hla', 0, '2016-07-20 23:28:10', '2016-07-20 23:29:50'),
 (19, 3, 'daf', 0, '2016-07-20 23:29:54', '2016-07-20 23:29:54'),
 (20, 4, 'Char', 0, '2016-07-20 23:32:26', '2016-07-30 22:08:34'),
@@ -408,8 +512,8 @@ INSERT INTO `options` (`id`, `multiple_question_id`, `description`, `credible`, 
 (30, 6, 'El proceso unificado de desarrollo no es un método ágil.', 0, '2016-07-21 04:21:55', '2016-07-21 04:21:55'),
 (31, 7, '[1..20]', 0, '2016-07-21 04:28:07', '2016-07-30 22:05:43'),
 (33, 5, 'rsdfsdfsdfs', 0, '2016-07-22 19:12:27', '2016-07-22 19:12:27'),
-(36, 13, '(x, _, _) = x', 0, '2016-07-27 01:31:13', '2016-07-30 22:33:26'),
-(37, 13, 'x:xs', 0, '2016-07-27 01:31:18', '2016-07-30 22:33:26'),
+(36, 13, '(x, _, _) = x', 1, '2016-07-27 01:31:13', '2016-07-30 22:33:26'),
+(37, 13, 'x:xs', 1, '2016-07-27 01:31:18', '2016-07-30 22:33:26'),
 (38, 15, '[(Boo,Char)]', 1, '2016-07-30 21:18:35', '2016-07-30 21:18:35'),
 (39, 15, '[(Boo,Char),(Bool,Char)]', 0, '2016-07-30 21:18:58', '2016-07-30 21:18:58'),
 (40, 15, '[(String,Char)]', 0, '2016-07-30 21:19:14', '2016-07-30 21:19:14'),
@@ -435,7 +539,9 @@ INSERT INTO `options` (`id`, `multiple_question_id`, `description`, `credible`, 
 (64, 16, 'Se creo para dar comportamiento dinámico.', 0, '2016-07-31 08:01:27', '2016-07-31 08:01:27'),
 (68, 12, 'dfsdfsdfsfsdf', 1, '2016-08-05 01:18:32', '2016-08-05 01:39:39'),
 (70, 12, 'sdfsfsdf', 0, '2016-08-05 01:24:45', '2016-08-05 01:25:54'),
-(71, 12, 'sdfsdsdfsdf', 1, '2016-08-05 01:25:44', '2016-08-05 01:25:47');
+(71, 12, 'sdfsdsdfsdf', 1, '2016-08-05 01:25:44', '2016-08-05 01:25:47'),
+(73, 17, 'opcion 1', 1, '2016-08-11 19:39:11', '2016-08-11 19:39:11'),
+(74, 17, 'opcion 2', 0, '2016-08-11 19:39:30', '2016-08-11 19:39:30');
 
 -- --------------------------------------------------------
 
@@ -495,7 +601,11 @@ INSERT INTO `questions` (`id`, `group_id`, `title`, `description`, `types`, `cre
 (20, 22, 'Javascript', 'Cual es el nombre del creador de javascript.?', 'develop', 0, '2016-07-31 07:58:29', '2016-07-31 07:59:11'),
 (21, 22, 'Definición de CSS', 'Escoja los enunciados que son correctos', 'multiple', 0, '2016-07-31 07:59:30', '2016-07-31 08:00:38'),
 (26, 9, 'Pregunta de complemento', 'Lo pregunta de datos &nbsp;<compl>compl-2</compl>&nbsp;&nbsp;&nbsp;&nbsp;gana ventaja&nbsp;<compl>compl-4</compl> fsdfsdfsdfsdf&nbsp;&nbsp; &nbsp; sdfsdfsdf &nbsp;carga &nbsp; &nbsp; &nbsp;camiones &nbsp; &nbsp;sdfsdf &nbsp;dfsdfdf sdfsd &nbsp;<compl>compl-20</compl>&nbsp; &nbsp; fsdsdf dfsdf&nbsp;&nbsp; &nbsp; dfsdfsf&nbsp;&nbsp; &nbsp; dsfsf &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; sdfsdfsf dos gato sdfsd&nbsp;<compl>compl-25</compl>&nbsp;&nbsp;&nbsp;&nbsp;', 'complemento', 0, '2016-08-06 05:15:17', '2016-08-06 06:41:01'),
-(28, 9, 'Pregunta de falso Verdadero ', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis odit quisquam, nostrum incidunt, repellat nihil rerum magnam id sunt, voluptatibus nam. Amet, omnis.', 'falsoVerdad', 0, '2016-08-02 17:28:41', '2016-08-05 04:16:00');
+(28, 9, 'Pregunta de falso Verdadero ', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis odit quisquam, nostrum incidunt, repellat nihil rerum magnam id sunt, voluptatibus nam. Amet, omnis.', 'falsoVerdad', 1, '2016-08-02 17:28:41', '2016-08-05 04:16:00'),
+(29, 25, 'pregunta de complemento civismo', 'sdsfasfsdfsdf  ', 'multiple', 0, '2016-08-11 19:37:54', '2016-08-11 19:38:52'),
+(30, 25, 'preg desarrollo', 'fsfsdfsdfsdf', 'develop', 0, '2016-08-11 19:39:58', '2016-08-11 19:40:10'),
+(31, 25, 'pregunta complemento ', '<compl>compl-27</compl>&nbsp;&nbsp;dadadffdfadfadfaf&nbsp;&nbsp;&nbsp;<compl>compl-26</compl>&nbsp;&nbsp;', 'complemento', 0, '2016-08-11 19:40:29', '2016-08-11 19:43:08'),
+(32, 25, 'pregunta falso verdarero', 'dsfsdfsd sdfsdf ', 'falsoVerdad', 0, '2016-08-11 19:44:07', '2016-08-11 19:44:33');
 
 -- --------------------------------------------------------
 
@@ -554,21 +664,16 @@ CREATE TABLE `teachers` (
 INSERT INTO `teachers` (`id`, `user_id`, `cod_sis`, `created_at`, `updated_at`) VALUES
 (1, 30, 2012555, '0000-00-00 00:00:00', '2016-06-17 22:08:27'),
 (2, 33, 2008442, '0000-00-00 00:00:00', '2016-06-27 09:47:07'),
-(3, 0, 2006221, '2016-06-26 03:55:56', '2016-06-26 03:55:56'),
 (4, 31, 20115521, '2016-06-26 06:36:15', '2016-06-26 06:39:14'),
-(5, 0, 20123344, '2016-06-26 06:36:27', '2016-06-26 06:36:27'),
-(6, 0, 20100234, '2016-06-26 12:12:54', '2016-06-26 12:12:54'),
-(7, 0, 20100235, '2016-06-26 12:12:54', '2016-06-26 12:12:54'),
 (8, 34, 20100236, '2016-06-26 12:12:54', '2016-06-27 18:25:43'),
-(9, 0, 20100237, '2016-06-26 12:12:54', '2016-06-26 12:12:54'),
-(10, 0, 20100238, '2016-06-26 12:12:54', '2016-06-26 12:12:54'),
 (11, 35, 20031234, '2016-06-28 18:12:42', '2016-06-28 18:15:08'),
-(12, 0, 20100212, '2016-06-28 18:22:29', '2016-06-28 18:22:29'),
-(13, 0, 20112344, '2016-06-28 18:22:29', '2016-06-28 18:22:29'),
-(14, 0, 20443222, '2016-06-28 18:22:29', '2016-06-28 18:22:29'),
-(15, 0, 20112223, '2016-06-28 18:22:29', '2016-06-28 18:22:29'),
-(16, 0, 2011233, '2016-06-28 18:22:29', '2016-06-28 18:22:29'),
-(17, 36, 20014444, '2016-07-31 20:21:49', '2016-07-31 20:23:15');
+(17, 36, 20014444, '2016-07-31 20:21:49', '2016-07-31 20:23:15'),
+(18, 0, 20110234, '2016-08-11 19:30:58', '2016-08-11 19:30:58'),
+(19, 37, 20110235, '2016-08-11 19:30:58', '2016-08-11 19:33:03'),
+(20, 0, 20110236, '2016-08-11 19:30:58', '2016-08-11 19:30:58'),
+(21, 0, 20110237, '2016-08-11 19:30:58', '2016-08-11 19:30:58'),
+(22, 0, 20100238, '2016-08-11 19:30:58', '2016-08-11 19:30:58'),
+(23, 0, 20100237, '2016-08-11 19:30:58', '2016-08-11 19:30:58');
 
 -- --------------------------------------------------------
 
@@ -595,20 +700,21 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `phone`, `active`, `type`, `user_img`) VALUES
-(17, 'administrador del sitio', 'jultum88@gmail.com', '$2y$10$Nw3Cd25xmin6mE4mdggJX.MzfmyvZiBxkow7umjPXQ8sxFbn0il8K', 'xthCjIfLhGRZYCJ9ZHfqQnSTNxnQjHnAD8JEBCyRn5qikB2qUVaxRIU7sE7d', NULL, '2016-08-04 21:08:58', 635344866, 1, 0, 'user_17.jpg'),
+(17, 'admin', 'jultum88@gmail.com', '$2y$10$Nw3Cd25xmin6mE4mdggJX.MzfmyvZiBxkow7umjPXQ8sxFbn0il8K', 'kWJ2pquVaf7Jn7tWixKkV5UNw4Y1s3hrxWwaO559RvXGykgGzhe15VbnzpJV', NULL, '2016-08-18 15:02:09', 5555555, 1, 0, 'user_17.jpg'),
 (18, 'Jose Miguel Ramirez', 'jose@gmail.com', '$2y$10$M.3tXuaaF0HORgCP6BXmJ.CBuDX13UNDnbTeqcN6pz/URaVfwFOYK', 'VUfLPhPbU2H0CC5zOt0Wv0nPNYLjfoiVaLIzlsPDO627qLPdsd28Hwp46iCy', '2016-06-04 05:33:00', '2016-06-27 18:20:27', 0, 1, 2, 'nan'),
 (19, 'alexis', 'alex@gmail.com', '$2y$10$k/lHUf7EU69Gy6npy/oqv.BnYP3raboIdxfr8resbSQ/5kzcdFfyW', 'EFkb40oCDGwIC2j0zGqW8TlHKcNyjJJRpnzc2A8pKIbz818gVKEENzKOiELz', '2016-06-06 08:53:09', '2016-06-17 08:45:20', 43434, 1, 0, 'user_19.jpg'),
 (20, 'pame', 'pame@gmail.com', '$2y$10$9KPSJoYbl1OtaJUomJPdA.aZ2SSSVK18zyOagHE9fmtKgPhgzTT7O', 'OVH7Dlc57xrsKDdvmWzhY2A4lot2LSHOSzwwTElla3BhOtSYbXGCeUwqUAwW', '2016-06-06 09:16:09', '2016-06-26 01:28:56', 0, 1, 1, 'nan'),
-(21, 'francisco', 'pancho@gmail.com', '$2y$10$Qa5LO9swd02yvGmYOj1t1ObGW4Uo6mYDqlKM1yc2a9eMhymKI//KC', 'wyohd41wUXNFlFOamjNgQNpjTqkGmUqgbJdjE5WOAD9uzBDmG3iRjGNIXbOj', '2016-06-06 10:07:01', '2016-06-23 01:40:32', 0, 0, 1, 'nan'),
-(22, 'diego jael', 'diego@gmail.com', '$2y$10$nTntK6/BXBrp5szz8feXOery758jSAxzDB4W4VF6ynkkTtB11/f1W', 'fnoIjHU5p6Haf9xH7NHmYJV6997oLelcvptgYqqSaw6QxwW3rfiRf1Kl9vxL', '2016-06-14 10:32:41', '2016-06-17 20:37:56', 554433, 1, 0, 'user_22.jpg'),
+(21, 'Corina Flores', 'corinaflores@gmail.com', '$2y$10$GfNPIc5unT9maJNWOjn9GOnMSkXOWLxMg8FK5ml7zl1A6wMMkUfqq', 'xtphvnUvumMk9qGwmBk6dsiwDad1DCHYawyPuMxW47jo6SvkpajZgYmw3SVo', '2016-06-06 10:07:01', '2016-08-18 15:03:44', 4444, 1, 0, 'nan'),
+(22, 'diego jael', 'diego@gmail.com', '$2y$10$nTntK6/BXBrp5szz8feXOery758jSAxzDB4W4VF6ynkkTtB11/f1W', '6lLH71z4bcXuxfE3AX0vJfjFaoR2icrICCtUH0zovo6sT6Zh6IWN4olcM2Ww', '2016-06-14 10:32:41', '2016-08-17 23:27:36', 554433, 1, 0, 'user_22.jpg'),
 (23, 'jaime', 'jaime@gmail.com', '$2y$10$VkUMbmDPOz6QDF9QvYvp6uQPWnLNJODH4bkEaGZF4Oz8AN20WkPv6', 'Dg98N94FSZU01SOdYLKJ6Fghm8mEabZNmoMxhhCfvylojSrgnD8cx0PCwPc7', '2016-06-14 10:37:25', '2016-06-17 20:42:17', 0, 0, 1, 'user_23.jpg'),
-(30, 'maría dolores Mendoza  Gonzales', 'maria@gmail.com', '$2y$10$Vovfqs/rY6SyAVbAbPIcAuuRRbs12wsAtQ9YqCH0tCEzP5FzqL.NS', 'kA9F4itg9USAnKtFgAAuPEby2Z8HxXRiJIS9S2mVF03TT9kbVPrJMfPXSIFa', '2016-06-17 22:08:27', '2016-08-10 02:28:47', 8879345, 1, 1, 'user_30.jpg'),
+(30, 'maría dolores Mendoza  Gonzales', 'maria@gmail.com', '$2y$10$Vovfqs/rY6SyAVbAbPIcAuuRRbs12wsAtQ9YqCH0tCEzP5FzqL.NS', 'VFLQmhY9Cl11eBgdrVklPxDOnFNmQ0ml3iHrEOB1jJbLbntaRfO4LUUf3pim', '2016-06-17 22:08:27', '2016-08-12 23:44:57', 8879345, 1, 1, 'user_30.jpg'),
 (31, 'Matias Godoy Fernandez', 'juliotllan88@gmail.com', '$2y$10$JhGWrp6csYCQz0C4VeMjROyh9KjFHwOW14w/ouhWsCOxswe06HBKS', 'yLzRFJkBVFFALTFYrax6CQpoLUPpl9LeymUMJ4V7llGAJZabCfiqVQCnIbT5', '2016-06-26 06:39:14', '2016-06-28 11:51:30', 3332221, 1, 1, 'user_31.jpg'),
-(32, 'Jeronimo Jimenez', 'jeronimo@gmail.com', '$2y$10$uDDptc5Eh9ZuwoQDxvxWfOlmpQQPCrzq2Tyoaugek0B.hOpA5kLQO', 'zOzmStVOxwMSRUOLt62b3rfDzpAPu2D9f5gRdaxqR7NeuAMdOudxQOEiE7Qu', '2016-06-27 04:46:57', '2016-08-10 01:09:36', 443322, 1, 2, 'user_32.jpg'),
+(32, 'Jeronimo Jimenez', 'jeronimo@gmail.com', '$2y$10$uDDptc5Eh9ZuwoQDxvxWfOlmpQQPCrzq2Tyoaugek0B.hOpA5kLQO', 'jwmYWbo9N0NJ9TSPpY2txRUKszrpHApfWrHcyJq2lfn5HuVOlKttM7PfrhGO', '2016-06-27 04:46:57', '2016-08-17 23:25:03', 443322, 1, 2, 'user_32.jpg'),
 (33, 'Esteban Jaramillo Villena', 'esteban@gmail.com', '$2y$10$P57dVYpjbkNjIweXSZRMK.P.eUiSdWG4jWWAl.ZBEjn7NluHJSJJW', 'cjVG2h3DDfBv7EYhEQWIAEXpspBVn4EILQEO0rnND2ibfLZ3XaHFQx6FesDR', '2016-06-27 09:47:07', '2016-06-27 09:47:47', 0, 1, 1, 'user_33.jpg'),
 (34, 'Elder Guido Fernandez', 'elderg@gmail.com', '$2y$10$BFKfXI1CqM3jjEBWXMSGKeBBnDF4l15sae5Sz4loB4maZ8DZDB7L2', '8hiwKoJ2GwIuL8IhIrbWrTG8tFcvlgaZLiaumwMQaZNg2PccuSGIyXQbqTM4', '2016-06-27 18:25:43', '2016-06-28 11:58:53', 5543432, 1, 1, 'user_34.jpg'),
 (35, 'jose luis', 'joseluis@gmail.com', '$2y$10$vJDnyvHdnyzuyBJmqVXUMeKT4x059p1lLubW3XJMMAs0NDQQzvnL6', 'Cbfiryo3DZAUYBv41Vj9BeMTLIatj4pgUiVTCKXoVi6q7hQNEPABTO2DxsBt', '2016-06-28 18:15:08', '2016-06-28 21:43:35', 5554444, 1, 1, 'user_35.jpg'),
-(36, 'Felipe Gallegos Tomasi', 'felipe@gmail.com', '$2y$10$hbBD18e04kAgPwb2N/ITuuqYB2u3gZFng1XrrJHisxPTHPZEb0/Hq', 'MzmdDSVb2Tev2gLLQe3bFJeIZ3T3aUXiEazjCwJUpxCiIBds1Uz5HIJlUJmL', '2016-07-31 20:23:15', '2016-07-31 23:05:11', 55544, 1, 1, 'user_36.jpg');
+(36, 'Felipe Gallegos Tomasi', 'felipe@gmail.com', '$2y$10$hbBD18e04kAgPwb2N/ITuuqYB2u3gZFng1XrrJHisxPTHPZEb0/Hq', 'Zogrc1OkLmtt9yyBbnjA7XMg2QwDJb9Er0Ga1jnTQdqGCeoz95FLCecgHlDg', '2016-07-31 20:23:15', '2016-08-12 23:43:32', 55544, 1, 1, 'user_36.jpg'),
+(37, 'gonzalo ', 'gonzalo@gmail.com', '$2y$10$cgHbpCqp5C6D9B8Grb3IpuCw0LDrFePwVMtVmq6ZHoQsiu57YrBSW', '97PGz5Sr4uunLJFoLrVPONpVMJJjjCCV3pX5xjgovrzHSFGS8DlDlsCKaln4', '2016-08-11 19:33:03', '2016-08-11 20:08:35', 0, 1, 1, 'nan');
 
 --
 -- Índices para tablas volcadas
@@ -632,6 +738,18 @@ ALTER TABLE `complementquestions`
 ALTER TABLE `courses`
   ADD PRIMARY KEY (`id`),
   ADD KEY `courses_career_id_index` (`career_id`);
+
+--
+-- Indices de la tabla `evaluations`
+--
+ALTER TABLE `evaluations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `evaluation_student`
+--
+ALTER TABLE `evaluation_student`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `exams`
@@ -725,22 +843,32 @@ ALTER TABLE `careers`
 -- AUTO_INCREMENT de la tabla `complementquestions`
 --
 ALTER TABLE `complementquestions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT de la tabla `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT de la tabla `evaluations`
+--
+ALTER TABLE `evaluations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+--
+-- AUTO_INCREMENT de la tabla `evaluation_student`
+--
+ALTER TABLE `evaluation_student`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT de la tabla `exams`
 --
 ALTER TABLE `exams`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT de la tabla `exam_question`
 --
 ALTER TABLE `exam_question`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT de la tabla `exam_student`
 --
@@ -750,12 +878,12 @@ ALTER TABLE `exam_student`
 -- AUTO_INCREMENT de la tabla `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT de la tabla `group_student`
 --
 ALTER TABLE `group_student`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `multiplequestions`
 --
@@ -770,7 +898,7 @@ ALTER TABLE `options`
 -- AUTO_INCREMENT de la tabla `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT de la tabla `students`
 --
@@ -780,12 +908,12 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT de la tabla `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
